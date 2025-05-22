@@ -17,7 +17,7 @@ Common labels
 */}}
 {{- define "oc.labels" -}}
 helm.sh/chart: {{ include "oc.chart" . }}
-{{ include "oc.selectorLabels" . }}
+#{{ include "oc.selectorLabels" . }}
 {{- if or .Chart.AppVersion .Values.image.tag }}
 app.kubernetes.io/version: {{ .Values.image.tag | default .Chart.AppVersion | quote }}
 {{- end }}
