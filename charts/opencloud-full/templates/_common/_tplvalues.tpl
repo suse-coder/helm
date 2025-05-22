@@ -247,17 +247,7 @@ OC deployment template metadata template
 metadata:
   labels:
     app: {{ .scope.appName }}
-    helm.sh/chart: {{ include "oc.chart" .scope }}
-    {{- if or .scope.Chart.AppVersion .scope.Values.image.tag }}
-    app.kubernetes.io/version: {{ .scope.Values.image.tag | default .scope.Chart.AppVersion | quote }}
-    {{- end }}
-    app.kubernetes.io/managed-by: {{ .scope.Release.Service }}
-    {{- if .scope.Values.extraLabels }}
-    {{ toYaml .scope.Values.extraLabels | nindent 4 }}
-    {{- end }}
-    {{- with and .scope.appSpecificConfig .scope.appSpecificConfig.extraLabels }}
-    {{ toYaml . | nindent 4 }}
-    {{- end }}
+    {{- include "oc.labels" .scope | nindent 4 }}
   {{- if .configCheck }}
   annotations:
     checksum/config: {{ include (print .scope.Template.BasePath "/" .scope.appName "/config.yaml") .scope | sha256sum }}
