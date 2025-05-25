@@ -11,7 +11,11 @@ maintainers:
 type: application
 version: 2.3.1
 # renovate: datasource=docker depName=opencloudeu/opencloud-rolling
+<<<<<<< HEAD
 appVersion: 2.3.0
+=======
+appVersion: 2.3.1
+>>>>>>> full-chart
 kubeVersion: ""
 sources:
   - https://github.com/opencloud-eu/opencloud
