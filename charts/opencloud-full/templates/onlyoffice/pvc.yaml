@@ -5,6 +5,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .appName }}-data
   namespace: {{ template "oc.namespace" . }}
+  annotations:
   labels:
     app: {{ .appName }}
     oc-metrics: enabled
