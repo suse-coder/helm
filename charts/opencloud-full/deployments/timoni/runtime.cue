@@ -47,6 +47,7 @@ runtime: {
                 "EXTERNAL_DOMAIN":           "obj.data.EXTERNAL_DOMAIN"
                 "KEYCLOAK_DOMAIN":           "obj.data.KEYCLOAK_DOMAIN"
                 "MINIO_DOMAIN":              "obj.data.MINIO_DOMAIN"
+                "MINIO_PERSISTENCE_SIZE":    "obj.data.MINIO_PERSISTENCE_SIZE"
                 "LDAP_URI":                  "obj.data.LDAP_URI"
                 "OIDC_ISSUER_URI":           "obj.data.OIDC_ISSUER_URI"
                 "COLLABORA_URI":             "obj.data.COLLABORA_URI"
@@ -91,16 +92,26 @@ runtime: {
                 "STORAGE_USERS_BACKEND_DRIVER": "obj.data.STORAGE_USERS_BACKEND_DRIVER"
                 "WEB_OIDC_WEB_CLIENT_ID": "obj.data.WEB_OIDC_WEB_CLIENT_ID"
                 "IDM_PERSISTENCE_ENABLED": "obj.data.IDM_PERSISTENCE_ENABLED"
+                "IDM_PERSISTENCE_SIZE": "obj.data.IDM_PERSISTENCE_SIZE"
+                "OCM_PERSISTENCE_ENABLED": "obj.data.OCM_PERSISTENCE_ENABLED"
+                "OCM_PERSISTENCE_SIZE": "obj.data.OCM_PERSISTENCE_SIZE"
                 "OPENLDAP_LTB_PASSWD_ENABLED": "obj.data.OPENLDAP_LTB_PASSWD_ENABLED"
                 "OPENLDAP_REPLICATION_ENABLED": "obj.data.OPENLDAP_REPLICATION_ENABLED"
                 "OIDC_IDP_INSECURE": "obj.data.OIDC_IDP_INSECURE"
                 "OC_HTTP_API_INSECURE": "obj.data.OC_HTTP_API_INSECURE"
                 "NATS_PERSISTENCE_ENABLED": "obj.data.NATS_PERSISTENCE_ENABLED"
+                "NATS_PERSISTENCE_SIZE": "obj.data.NATS_PERSISTENCE_SIZE"
                 "SEARCH_PERSISTENCE_ENABLED": "obj.data.SEARCH_PERSISTENCE_ENABLED"
+                "SEARCH_PERSISTENCE_SIZE": "obj.data.SEARCH_PERSISTENCE_SIZE"
                 "STORAGE_SYSTEM_PERSISTENCE_ENABLED": "obj.data.STORAGE_SYSTEM_PERSISTENCE_ENABLED"
+                "STORAGE_SYSTEM_PERSISTENCE_SIZE": "obj.data.STORAGE_SYSTEM_PERSISTENCE_SIZE"
                 "STORAGE_USERS_PERSISTENCE_ENABLED": "obj.data.STORAGE_USERS_PERSISTENCE_ENABLED"
+                "STORAGE_USERS_PERSISTENCE_SIZE": "obj.data.STORAGE_USERS_PERSISTENCE_SIZE"
                 "THUMBNAILS_PERSISTENCE_ENABLED": "obj.data.THUMBNAILS_PERSISTENCE_ENABLED"
+                "THUMBNAILS_PERSISTENCE_SIZE": "obj.data.THUMBNAILS_PERSISTENCE_SIZE"
                 "WEB_PERSISTENCE_ENABLED": "obj.data.WEB_PERSISTENCE_ENABLED"
+                "WEB_PERSISTENCE_SIZE": "obj.data.WEB_PERSISTENCE_SIZE"
+                "ONLYOFFICE_PERSISTENCE_SIZE": "obj.data.ONLYOFFICE_PERSISTENCE_SIZE"
             }
         }
     ]
@@ -132,6 +143,8 @@ runtime: {
         OPENCLOUD_LOGGING_LEVEL: "debug"
         KEYCLOAK_ENABLED: true
         MINIO_ENABLED: true
+        MINIO_PERSISTENCE_SIZE: "40Gi"
+        ONLYOFFICE_DOMAIN: strings.TrimPrefix(strings.TrimPrefix(parameter.ONLYOFFICE_URI, "https://"), "http://")
         INGRESS_ENABLED: false
         INGRESS_CLASS_NAME: "nginx"
         INGRESS_PROXY_BODY_SIZE: "1024m"
@@ -174,6 +187,16 @@ runtime: {
         STORAGE_USERS_PERSISTENCE_ENABLED: true
         THUMBNAILS_PERSISTENCE_ENABLED: true
         WEB_PERSISTENCE_ENABLED: true
+        IDM_PERSISTENCE_SIZE: "10Gi"
+        OCM_PERSISTENCE_ENABLED: false
+        OCM_PERSISTENCE_SIZE: "1Gi"
+        NATS_PERSISTENCE_SIZE: "10Gi"
+        SEARCH_PERSISTENCE_SIZE: "10Gi"
+        STORAGE_SYSTEM_PERSISTENCE_SIZE: "5Gi"
+        STORAGE_USERS_PERSISTENCE_SIZE: "50Gi"
+        THUMBNAILS_PERSISTENCE_SIZE: "10Gi"
+        WEB_PERSISTENCE_SIZE: "1Gi"
+        ONLYOFFICE_PERSISTENCE_SIZE: "2Gi"
 
         LDAP_ENABLED: true
         TIKA_ENABLED: true
