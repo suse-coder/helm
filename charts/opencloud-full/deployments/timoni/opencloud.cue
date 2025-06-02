@@ -19,7 +19,6 @@ bundle: {
                 sync: {
                     timeout: 10
                     createNamespace: true
-                    interval: 1
                 }
                 helmValues: {
                     logging: {
@@ -97,6 +96,9 @@ bundle: {
                                 issuerURI: string @timoni(runtime:string:OIDC_ISSUER_URI)
                                 userIDClaim: string @timoni(runtime:string:OIDC_USER_ID_CLAIM)
                                 userIDClaimAttributeMapping: string @timoni(runtime:string:OIDC_USER_ID_CLAIM_ATTRIBUTE_MAPPING)
+                                roleAssignment: {
+                                    claim: string @timoni(runtime:string:OIDC_ROLE_ASSIGNMENT_CLAIM)
+                                }
                             }
                             ldap: {
                                 writeable: bool @timoni(runtime:bool:LDAP_WRITEABLE)
