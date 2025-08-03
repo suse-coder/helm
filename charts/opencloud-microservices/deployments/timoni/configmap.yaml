@@ -42,9 +42,9 @@ data:
   ###############################################################################
   # Persistence StorageClass and AccessModes (global defaults)
   ###############################################################################
-  PERSISTENCE_STORAGE_CLASS_NAME: ""
+  PERSISTENCE_STORAGE_CLASS_NAME: "ceph-cephfs"
   # Comma-separated for runtime to split into a list, e.g. "ReadWriteMany" or "ReadWriteOnce,ReadOnlyMany"
-  PERSISTENCE_ACCESS_MODES: "ReadWriteOnce"
+  PERSISTENCE_ACCESS_MODES: "ReadWriteMany"
 
   ###############################################################################
   # Persistence (service PVC sizes and toggles)
