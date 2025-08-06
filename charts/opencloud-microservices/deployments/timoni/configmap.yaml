@@ -20,6 +20,13 @@ data:
   EXTERNAL_DOMAIN: "cloud.opencloud.test"
   TAG: "3.0.0"
 
+  ###############################################################################
+  # Deployment Strategy
+  ###############################################################################
+  DEPLOY_TYPE: "Recreate"
+  MAX_SURGE: "25%"
+  MAX_UNAV: "25%"
+
   OPENCLOUD_WEB_URL: "https://www.opencloud.eu"
   OPENCLOUD_LOGGING_LEVEL: "debug"
 

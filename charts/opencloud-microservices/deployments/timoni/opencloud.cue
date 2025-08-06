@@ -35,6 +35,15 @@ bundle: {
                     // Global persistence indirection (like _domainFilter pattern)
                     _persistenceStorageClassName: string @timoni(runtime:string:PERSISTENCE_STORAGE_CLASS_NAME)
                     _persistenceAccessModes:     string @timoni(runtime:string:PERSISTENCE_ACCESS_MODES)
+
+                    deploymentStrategy: {
+                        type: string @timoni(runtime:string:DEPLOYMENT_STRATEGY_TYPE)
+                        rollingUpdate: {
+                            maxSurge: string @timoni(runtime:string:DEPLOYMENT_STRATEGY_ROLLINGUPDATE_MAXSURGE)
+                            maxUnavailable: string @timoni(runtime:string:DEPLOYMENT_STRATEGY_ROLLINGUPDATE_MAXUNAVAILABLE)
+                        }
+                    }
+
                     logging: {
                         level: string @timoni(runtime:string:OPENCLOUD_LOGGING_LEVEL)
                     }

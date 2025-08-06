@@ -47,6 +47,9 @@ runtime: {
                 "TAG":                       "obj.data.TAG"
                 "EXTERNAL_DOMAIN":           "obj.data.EXTERNAL_DOMAIN"
                 "KEYCLOAK_DOMAIN":           "obj.data.KEYCLOAK_DOMAIN"
+                "DEPLOY_TYPE":               "obj.data.DEPLOY_TYPE"
+                "MAX_SURGE":                 "obj.data.MAX_SURGE"
+                "MAX_UNAV":                  "obj.data.MAX_UNAV"
                 "MINIO_DOMAIN":              "obj.data.MINIO_DOMAIN"
                 "MINIO_PERSISTENCE_SIZE":    "obj.data.MINIO_PERSISTENCE_SIZE"
                 "LDAP_URI":                  "obj.data.LDAP_URI"
@@ -124,6 +127,9 @@ runtime: {
         }
     ]
     defaults: {
+        DEPLOY_TYPE: "Recreate"
+        MAX_SURGE: "25%"
+        MAX_UNAV: "25%"
         TAG: ""
         LDAP_ADMIN_PASSWORD: "admin"
         LDAP_CONFIG_PASSWORD: "config"
