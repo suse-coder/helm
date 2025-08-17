@@ -9,6 +9,11 @@ metadata:
   name: openldap
 ---
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: clamav
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opencloud-config
@@ -125,6 +130,19 @@ data:
   SEARCH_EXTRACTOR_TYPE: "tika"
 
   ###############################################################################
+  # Demo Users
+  ###############################################################################
+  DEMO_USERS_ENABLED: "false"
+
+  ###############################################################################
+  # Antivirus
+  ###############################################################################
+  ANTIVIRUS_ENABLED: "true"
+  ANTIVIRUS_INFECTED_FILE_HANDLING: "delete"
+  ANTIVIRUS_ICAP_URL: ""
+  ANTIVIRUS_ICAP_SERVICE: ""
+
+  ###############################################################################
   # Collabora Configuration
   ###############################################################################
   COLLABORA_URI: "https://collabora.opencloud.test"
@@ -153,3 +171,19 @@ data:
   ###############################################################################
   WOPI_INGRESS_DOMAIN: "wopi.opencloud.test"
   WOPI_COLLABORA_TLS_HOST: "wopi-collabora.kube.opencloud.test"
+
+  ###############################################################################
+  # ClamAV Configuration
+  ###############################################################################
+  CLAMAV_REPLICA_COUNT: "1"
+  CLAMAV_RESOURCES_LIMITS_CPU: "500m"
+  CLAMAV_RESOURCES_LIMITS_MEMORY: "512Mi"
+  CLAMAV_RESOURCES_REQUESTS_CPU: "250m"
+  CLAMAV_RESOURCES_REQUESTS_MEMORY: "256Mi"
+  CLAMAV_PERSISTENCE_SIZE: "10Gi"
+  CLAMAV_FRESHCLAM_READONLY_ROOT_FILESYSTEM: "false"
+  CLAMAV_FRESHCLAM_IMAGE_TAG: "1.4.0"
+  CLAMAV_CLAMD_IMAGE_TAG: "1.4.0"
+  CLAMAV_ICAP_IMAGE_TAG: "0.5.10"
+  CLAMAV_ICAP_CLAMD_HOST: "opendesk-clamav-clamd"
+  CLAMAV_MILTER_CLAMD_HOST: "opendesk-clamav-clamd"

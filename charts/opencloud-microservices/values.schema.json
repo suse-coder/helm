@@ -1879,7 +1879,7 @@
                   "type": "integer"
                 },
                 "url": {
-                  "default": "",
+                  "default": null,
                   "description": "Sets the icap url",
                   "format": "uri",
                   "required": [],
