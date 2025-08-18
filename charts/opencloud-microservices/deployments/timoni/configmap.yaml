@@ -23,7 +23,7 @@ data:
   # Global Configuration
   ###############################################################################
   EXTERNAL_DOMAIN: "cloud.opencloud.test"
-  TAG: "3.0.0"
+  TAG: ""
 
   ###############################################################################
   # Deployment Strategy
@@ -135,14 +135,6 @@ data:
   DEMO_USERS_ENABLED: "false"
 
   ###############################################################################
-  # Antivirus
-  ###############################################################################
-  ANTIVIRUS_ENABLED: "true"
-  ANTIVIRUS_INFECTED_FILE_HANDLING: "delete"
-  ANTIVIRUS_ICAP_URL: ""
-  ANTIVIRUS_ICAP_SERVICE: ""
-
-  ###############################################################################
   # Collabora Configuration
   ###############################################################################
   COLLABORA_URI: "https://collabora.opencloud.test"
@@ -173,6 +165,14 @@ data:
   WOPI_COLLABORA_TLS_HOST: "wopi-collabora.kube.opencloud.test"
 
   ###############################################################################
+  # Antivirus
+  ###############################################################################
+  ANTIVIRUS_ENABLED: "true"
+  ANTIVIRUS_INFECTED_FILE_HANDLING: "abort"
+  ANTIVIRUS_ICAP_URL: "http://clamav-icap.clamav:1344"
+  ANTIVIRUS_ICAP_SERVICE: "avscan"
+
+  ###############################################################################
   # ClamAV Configuration
   ###############################################################################
   CLAMAV_REPLICA_COUNT: "1"
@@ -181,9 +181,10 @@ data:
   CLAMAV_RESOURCES_REQUESTS_CPU: "250m"
   CLAMAV_RESOURCES_REQUESTS_MEMORY: "256Mi"
   CLAMAV_PERSISTENCE_SIZE: "10Gi"
-  CLAMAV_FRESHCLAM_READONLY_ROOT_FILESYSTEM: "false"
   CLAMAV_FRESHCLAM_IMAGE_TAG: "1.4.0"
   CLAMAV_CLAMD_IMAGE_TAG: "1.4.0"
   CLAMAV_ICAP_IMAGE_TAG: "0.5.10"
-  CLAMAV_ICAP_CLAMD_HOST: "opendesk-clamav-clamd"
-  CLAMAV_MILTER_CLAMD_HOST: "opendesk-clamav-clamd"
+  CLAMAV_ICAP_IMAGE_REPOSITORY: "bmi/opendesk/components/platform-development/images/clamav-icap"
+  CLAMAV_ICAP_IMAGE_REGISTRY: "registry.opencode.de"
+  CLAMAV_ICAP_CLAMD_HOST: "clamav-clamd"
+  CLAMAV_MILTER_CLAMD_HOST: "clamav-clamd"

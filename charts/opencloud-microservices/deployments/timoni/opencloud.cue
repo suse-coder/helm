@@ -21,11 +21,11 @@ bundle: {
             namespace: "opencloud"
             values: {
                 repository: {
-                    url: "oci://ghcr.io/suse-coder/helm-charts"
+                    url: "oci://ghcr.io/opencloud-eu/helm-charts"
                 }
                 chart: {
                     name:    "opencloud-microservices"
-                    version: "0.2.5"
+                    version: "0.2.7"
                 }
                 sync: {
                     timeout: 10
@@ -554,14 +554,18 @@ bundle: {
                     url: "https://gitlab.opencode.de/api/v4/projects/1381/packages/helm/stable"
                 }
                 chart: {
-                    name:    "opendesk-clamav/opendesk-clamav"
+                    name:    "opendesk-clamav"
                     version: "4.0.6"
                 }
                 sync: {
-                    timeout: 10
+                    timeout: 5
                     createNamespace: true
                 }
                 helmValues: {
+                    // Global persistence indirection (like _domainFilter pattern)
+                    _persistenceStorageClassName: string @timoni(runtime:string:PERSISTENCE_STORAGE_CLASS_NAME)
+                    _persistenceAccessModes:     string @timoni(runtime:string:PERSISTENCE_ACCESS_MODES)
+
                     replicaCount: string @timoni(runtime:string:CLAMAV_REPLICA_COUNT)
                     resources: {
                         limits: {
@@ -574,12 +578,11 @@ bundle: {
                         }
                     }
                     persistence: {
+                        accessModes: [ "\(_persistenceAccessModes)" ]
                         size: string @timoni(runtime:string:CLAMAV_PERSISTENCE_SIZE)
+                        storageClass: "\(_persistenceStorageClassName)"
                     }
                     freshclam: {
-                        containerSecurityContext: {
-                            readOnlyRootFilesystem: bool @timoni(runtime:bool:CLAMAV_FRESHCLAM_READONLY_ROOT_FILESYSTEM)
-                        }
                         image: {
                             tag: string @timoni(runtime:string:CLAMAV_FRESHCLAM_IMAGE_TAG)
                         }
@@ -591,6 +594,8 @@ bundle: {
                     }
                     icap: {
                         image: {
+                            registry: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_REGISTRY)
+                            repository: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_REPOSITORY)
                             tag: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_TAG)
                         }
                         settings: {
