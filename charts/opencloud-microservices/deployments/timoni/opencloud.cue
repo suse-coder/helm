@@ -15,27 +15,42 @@ bundle: {
         // },
         "opencloud": {
             module: {
-                url:     "oci://ghcr.io/stefanprodan/modules/flux-helm-release"
+                url: "oci://ghcr.io/stefanprodan/modules/flux-helm-release"
                 version: "latest"
             }
             namespace: "opencloud"
             values: {
                 repository: {
-                    url: "oci://ghcr.io/suse-coder/helm-charts"
+                    url: "oci://ghcr.io/opencloud-eu/helm-charts"
                 }
                 chart: {
                     name:    "opencloud-microservices"
-                    version: "0.2.0"
+                    version: "0.2.7"
                 }
                 sync: {
                     timeout: 10
                     createNamespace: true
                 }
                 helmValues: {
+                    // Global persistence indirection (like _domainFilter pattern)
+                    _persistenceStorageClassName: string @timoni(runtime:string:PERSISTENCE_STORAGE_CLASS_NAME)
+                    _persistenceAccessModes:     string @timoni(runtime:string:PERSISTENCE_ACCESS_MODES)
+
+                    deploymentStrategy: {
+                        type: string @timoni(runtime:string:DEPLOY_TYPE)
+                        rollingUpdate: {
+                            maxSurge: string @timoni(runtime:string:MAX_SURGE)
+                            maxUnavailable: string @timoni(runtime:string:MAX_UNAV)
+                        }
+                    }
+
                     logging: {
                         level: string @timoni(runtime:string:OPENCLOUD_LOGGING_LEVEL)
                     }
                     externalDomain: string @timoni(runtime:string:EXTERNAL_DOMAIN)
+                    image: {
+                        tag: string @timoni(runtime:string:TAG)
+                    }
                     keycloak: {
                         enabled: bool @timoni(runtime:bool:KEYCLOAK_ENABLED)
                         domain: string @timoni(runtime:string:KEYCLOAK_DOMAIN)
@@ -100,6 +115,15 @@ bundle: {
                         }
                     }
                     features: {
+                        demoUsers: bool @timoni(runtime:bool:DEMO_USERS_ENABLED)
+                        virusscan: {
+                            enabled: bool @timoni(runtime:bool:ANTIVIRUS_ENABLED)
+                            infectedFileHandling: string @timoni(runtime:string:ANTIVIRUS_INFECTED_FILE_HANDLING)
+                            icap: {
+                                url: string @timoni(runtime:string:ANTIVIRUS_ICAP_URL)
+                                service: string @timoni(runtime:string:ANTIVIRUS_ICAP_SERVICE)
+                            }
+                        }
                         externalUserManagement: {
                             enabled: bool @timoni(runtime:bool:EXTERNAL_USER_MANAGEMENT_ENABLED)
                             adminUUID: string @timoni(runtime:string:EXTERNAL_USER_MANAGEMENT_ADMIN_UUID)
@@ -177,12 +201,17 @@ bundle: {
                             persistence: {
                                 enabled: bool @timoni(runtime:bool:NATS_PERSISTENCE_ENABLED)
                                 size: string @timoni(runtime:string:NATS_PERSISTENCE_SIZE)
+                                storageClassName: "\(_persistenceStorageClassName)"
+                                accessModes: [ "\(_persistenceAccessModes)" ]
+                                chownInitContainer: bool @timoni(runtime:bool:NATS_PERSISTENCE_CHOWN_INIT_CONTAINER)
                             }
                         }
                         search: {
                             persistence: {
                                 enabled: bool @timoni(runtime:bool:SEARCH_PERSISTENCE_ENABLED)
                                 size: string @timoni(runtime:string:SEARCH_PERSISTENCE_SIZE)
+                                storageClassName: "\(_persistenceStorageClassName)"
+                                accessModes: [ "\(_persistenceAccessModes)" ]
                             }
                             extractor: {
                                 type: string @timoni(runtime:string:SEARCH_EXTRACTOR_TYPE)
@@ -192,12 +221,16 @@ bundle: {
                             persistence: {
                                 enabled: bool @timoni(runtime:bool:STORAGE_SYSTEM_PERSISTENCE_ENABLED)
                                 size: string @timoni(runtime:string:STORAGE_SYSTEM_PERSISTENCE_SIZE)
+                                storageClassName: "\(_persistenceStorageClassName)"
+                                accessModes: [ "\(_persistenceAccessModes)" ]
                             }
                         }
                         storageusers: {
                             persistence: {
                                 enabled: bool @timoni(runtime:bool:STORAGE_USERS_PERSISTENCE_ENABLED)
                                 size: string @timoni(runtime:string:STORAGE_USERS_PERSISTENCE_SIZE)
+                                storageClassName: "\(_persistenceStorageClassName)"
+                                accessModes: [ "\(_persistenceAccessModes)" ]
                             }
                             storageBackend: {
                                 driver: string @timoni(runtime:string:STORAGE_USERS_BACKEND_DRIVER)
@@ -207,12 +240,16 @@ bundle: {
                             persistence: {
                                 enabled: bool @timoni(runtime:bool:THUMBNAILS_PERSISTENCE_ENABLED)
                                 size: string @timoni(runtime:string:THUMBNAILS_PERSISTENCE_SIZE)
+                                storageClassName: "\(_persistenceStorageClassName)"
+                                accessModes: [ "\(_persistenceAccessModes)" ]
                             }
                         }
                         web: {
                             persistence: {
                                 enabled: bool @timoni(runtime:bool:WEB_PERSISTENCE_ENABLED)
                                 size: string @timoni(runtime:string:WEB_PERSISTENCE_SIZE)
+                                storageClassName: "\(_persistenceStorageClassName)"
+                                accessModes: [ "\(_persistenceAccessModes)" ]
                             }
                             config: {
                                 oidc: {
@@ -332,12 +369,16 @@ bundle: {
                             persistence: {
                                 enabled: bool @timoni(runtime:bool:IDM_PERSISTENCE_ENABLED)
                                 size: string @timoni(runtime:string:IDM_PERSISTENCE_SIZE)
+                                storageClassName: "\(_persistenceStorageClassName)"
+                                accessModes: [ "\(_persistenceAccessModes)" ]
                             }
                         }
                         ocm: {
                             persistence: {
                                 enabled: bool @timoni(runtime:bool:OCM_PERSISTENCE_ENABLED)
                                 size: string @timoni(runtime:string:OCM_PERSISTENCE_SIZE)
+                                storageClassName: "\(_persistenceStorageClassName)"
+                                accessModes: [ "\(_persistenceAccessModes)" ]
                             }
                         }
                     }
@@ -501,7 +542,73 @@ bundle: {
                     }
                 }
             }
+        },
+        "clamav": {
+            module: {
+                url: "oci://ghcr.io/stefanprodan/modules/flux-helm-release"
+                version: "latest"
+            }
+            namespace: "clamav"
+            values: {
+                repository: {
+                    url: "https://gitlab.opencode.de/api/v4/projects/1381/packages/helm/stable"
+                }
+                chart: {
+                    name:    "opendesk-clamav"
+                    version: "4.0.6"
+                }
+                sync: {
+                    timeout: 5
+                    createNamespace: true
+                }
+                helmValues: {
+                    // Global persistence indirection (like _domainFilter pattern)
+                    _persistenceStorageClassName: string @timoni(runtime:string:PERSISTENCE_STORAGE_CLASS_NAME)
+                    _persistenceAccessModes:     string @timoni(runtime:string:PERSISTENCE_ACCESS_MODES)
+
+                    replicaCount: string @timoni(runtime:string:CLAMAV_REPLICA_COUNT)
+                    resources: {
+                        limits: {
+                            cpu: string @timoni(runtime:string:CLAMAV_RESOURCES_LIMITS_CPU)
+                            memory: string @timoni(runtime:string:CLAMAV_RESOURCES_LIMITS_MEMORY)
+                        }
+                        requests: {
+                            cpu: string @timoni(runtime:string:CLAMAV_RESOURCES_REQUESTS_CPU)
+                            memory: string @timoni(runtime:string:CLAMAV_RESOURCES_REQUESTS_MEMORY)
+                        }
+                    }
+                    persistence: {
+                        accessModes: [ "\(_persistenceAccessModes)" ]
+                        size: string @timoni(runtime:string:CLAMAV_PERSISTENCE_SIZE)
+                        storageClass: "\(_persistenceStorageClassName)"
+                    }
+                    freshclam: {
+                        image: {
+                            tag: string @timoni(runtime:string:CLAMAV_FRESHCLAM_IMAGE_TAG)
+                        }
+                    }
+                    clamd: {
+                        image: {
+                            tag: string @timoni(runtime:string:CLAMAV_CLAMD_IMAGE_TAG)
+                        }
+                    }
+                    icap: {
+                        image: {
+                            registry: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_REGISTRY)
+                            repository: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_REPOSITORY)
+                            tag: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_TAG)
+                        }
+                        settings: {
+                            clamdModClamdHost: string @timoni(runtime:string:CLAMAV_ICAP_CLAMD_HOST)
+                        }
+                    }
+                    milter: {
+                        settings: {
+                            clamdHost: string @timoni(runtime:string:CLAMAV_MILTER_CLAMD_HOST)
+                        }
+                    }
+                }
+            }
         }
     }
 }
-

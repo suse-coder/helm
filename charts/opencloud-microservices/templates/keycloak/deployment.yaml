@@ -87,7 +87,7 @@ spec:
               memory: 512Mi
           startupProbe:
             httpGet:
-              path: /health/ready
+              path: /realms/master
               port: http
             periodSeconds: 10
             failureThreshold: 30

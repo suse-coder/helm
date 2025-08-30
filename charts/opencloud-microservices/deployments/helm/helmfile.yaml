@@ -27,7 +27,7 @@ releases:
           enabled: true # Enable Keycloak for authentication.
           domain: keycloak.opencloud.test # Domain for Keycloak.
       - minio:
-          enabled: true # Enable MinIO for object storage.
+          enabled: false # Enable MinIO for object storage.
           domain: minio.opencloud.test # Domain for MinIO.
           config:
             persistence:
@@ -151,8 +151,8 @@ releases:
                 - ReadWriteOnce
               storageClassName: 
             storageBackend:
-              driver: decomposeds3
- 
+              driver: posix
+
           thumbnails:
             persistence:
               enabled: true

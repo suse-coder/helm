@@ -9,6 +9,11 @@ metadata:
   name: openldap
 ---
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: clamav
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opencloud-config
@@ -18,21 +23,40 @@ data:
   # Global Configuration
   ###############################################################################
   EXTERNAL_DOMAIN: "cloud.opencloud.test"
+  TAG: ""
+
+  ###############################################################################
+  # Deployment Strategy
+  ###############################################################################
+  DEPLOY_TYPE: "Recreate"
+  MAX_SURGE: "25%"
+  MAX_UNAV: "25%"
+
   OPENCLOUD_WEB_URL: "https://www.opencloud.eu"
   OPENCLOUD_LOGGING_LEVEL: "debug"
+
+  ###############################################################################
+  # Ingress
+  ###############################################################################
   INGRESS_ENABLED: "false"
   INGRESS_CLASS_NAME: "nginx"
   INGRESS_PROXY_BODY_SIZE: "1024m"
   GATEWAY_HTTPROUTE_ENABLED: "true"
+
+  ###############################################################################
+  # OIDC Configuration
+  ###############################################################################
+  OIDC_IDP_INSECURE: "true"
+  OC_HTTP_API_INSECURE: "true"
   APPS_INTEGRATION_ENABLED: "true"
   WEB_OIDC_WEB_CLIENT_ID: "web"
 
   ###############################################################################
   # Persistence StorageClass and AccessModes (global defaults)
   ###############################################################################
-  PERSISTENCE_STORAGE_CLASS_NAME: "ceph-cephfs"
+  PERSISTENCE_STORAGE_CLASS_NAME: ""
   # Comma-separated for runtime to split into a list, e.g. "ReadWriteMany" or "ReadWriteOnce,ReadOnlyMany"
-  PERSISTENCE_ACCESS_MODES: "ReadWriteMany"
+  PERSISTENCE_ACCESS_MODES: "ReadWriteOnce"
 
   ###############################################################################
   # Persistence (service PVC sizes and toggles)
@@ -70,7 +94,7 @@ data:
   # Internal Minio (for testing only)
   ###############################################################################
   MINIO_DOMAIN: "minio.opencloud.test"
-  MINIO_ENABLED: "true"
+  MINIO_ENABLED: "false"
   MINIO_PERSISTENCE_SIZE: "40Gi"
 
   ###############################################################################
@@ -106,6 +130,11 @@ data:
   SEARCH_EXTRACTOR_TYPE: "tika"
 
   ###############################################################################
+  # Demo Users
+  ###############################################################################
+  DEMO_USERS_ENABLED: "false"
+
+  ###############################################################################
   # Collabora Configuration
   ###############################################################################
   COLLABORA_URI: "https://collabora.opencloud.test"
@@ -134,3 +163,28 @@ data:
   ###############################################################################
   WOPI_INGRESS_DOMAIN: "wopi.opencloud.test"
   WOPI_COLLABORA_TLS_HOST: "wopi-collabora.kube.opencloud.test"
+
+  ###############################################################################
+  # Antivirus
+  ###############################################################################
+  ANTIVIRUS_ENABLED: "true"
+  ANTIVIRUS_INFECTED_FILE_HANDLING: "abort"
+  ANTIVIRUS_ICAP_URL: "http://clamav-icap.clamav:1344"
+  ANTIVIRUS_ICAP_SERVICE: "avscan"
+
+  ###############################################################################
+  # ClamAV Configuration
+  ###############################################################################
+  CLAMAV_REPLICA_COUNT: "1"
+  CLAMAV_RESOURCES_LIMITS_CPU: "500m"
+  CLAMAV_RESOURCES_LIMITS_MEMORY: "512Mi"
+  CLAMAV_RESOURCES_REQUESTS_CPU: "250m"
+  CLAMAV_RESOURCES_REQUESTS_MEMORY: "256Mi"
+  CLAMAV_PERSISTENCE_SIZE: "10Gi"
+  CLAMAV_FRESHCLAM_IMAGE_TAG: "1.4.0"
+  CLAMAV_CLAMD_IMAGE_TAG: "1.4.0"
+  CLAMAV_ICAP_IMAGE_TAG: "0.5.10"
+  CLAMAV_ICAP_IMAGE_REPOSITORY: "bmi/opendesk/components/platform-development/images/clamav-icap"
+  CLAMAV_ICAP_IMAGE_REGISTRY: "registry.opencode.de"
+  CLAMAV_ICAP_CLAMD_HOST: "clamav-clamd"
+  CLAMAV_MILTER_CLAMD_HOST: "clamav-clamd"
