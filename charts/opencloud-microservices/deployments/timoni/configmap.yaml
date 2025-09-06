@@ -46,6 +46,28 @@ data:
   # Comma-separated for runtime to split into a list, e.g. "ReadWriteMany" or "ReadWriteOnce,ReadOnlyMany"
   PERSISTENCE_ACCESS_MODES: "ReadWriteMany"
 
+  ###############################################################################
+  # Persistence (service PVC sizes and toggles)
+  ###############################################################################
+  IDM_PERSISTENCE_ENABLED: "false"
+  IDM_PERSISTENCE_SIZE: "10Gi"
+  NATS_PERSISTENCE_ENABLED: "true"
+  NATS_PERSISTENCE_SIZE: "10Gi"
+  OCM_PERSISTENCE_ENABLED: "false"
+  OCM_PERSISTENCE_SIZE: "1Gi"
+  ONLYOFFICE_PERSISTENCE_SIZE: "2Gi"
+  SEARCH_PERSISTENCE_ENABLED: "true"
+  SEARCH_PERSISTENCE_SIZE: "10Gi"
+  STORAGE_USERS_BACKEND_DRIVER: "posix"
+  STORAGE_SYSTEM_PERSISTENCE_ENABLED: "true"
+  STORAGE_SYSTEM_PERSISTENCE_SIZE: "5Gi"
+  STORAGE_USERS_PERSISTENCE_ENABLED: "true"
+  STORAGE_USERS_PERSISTENCE_SIZE: "50Gi"
+  THUMBNAILS_PERSISTENCE_ENABLED: "true"
+  THUMBNAILS_PERSISTENCE_SIZE: "10Gi"
+  WEB_PERSISTENCE_ENABLED: "true"
+  WEB_PERSISTENCE_SIZE: "1Gi"
+
   # NATS specific persistence options
   # When true, a root init container will chown the NATS data volume before the main container starts.
   NATS_PERSISTENCE_CHOWN_INIT_CONTAINER: "false"
@@ -89,6 +111,11 @@ data:
   OIDC_USER_ID_CLAIM: "sub"
   OIDC_USER_ID_CLAIM_ATTRIBUTE_MAPPING: "username"
   OIDC_ROLE_ASSIGNMENT_CLAIM: "roles"
+
+  ###############################################################################
+  # Search Configuration
+  ###############################################################################
+  SEARCH_EXTRACTOR_TYPE: "tika"
 
   ###############################################################################
   # Collabora Configuration
