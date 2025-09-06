@@ -47,6 +47,9 @@ runtime: {
                 "TAG":                       "obj.data.TAG"
                 "EXTERNAL_DOMAIN":           "obj.data.EXTERNAL_DOMAIN"
                 "KEYCLOAK_DOMAIN":           "obj.data.KEYCLOAK_DOMAIN"
+                "DEPLOY_TYPE":               "obj.data.DEPLOY_TYPE"
+                "MAX_SURGE":                 "obj.data.MAX_SURGE"
+                "MAX_UNAV":                  "obj.data.MAX_UNAV"
                 "MINIO_DOMAIN":              "obj.data.MINIO_DOMAIN"
                 "MINIO_PERSISTENCE_SIZE":    "obj.data.MINIO_PERSISTENCE_SIZE"
                 "LDAP_URI":                  "obj.data.LDAP_URI"
@@ -120,10 +123,31 @@ runtime: {
                 "WEB_PERSISTENCE_SIZE": "obj.data.WEB_PERSISTENCE_SIZE"
                 "ONLYOFFICE_PERSISTENCE_SIZE": "obj.data.ONLYOFFICE_PERSISTENCE_SIZE"
                 "NATS_PERSISTENCE_CHOWN_INIT_CONTAINER": "obj.data.NATS_PERSISTENCE_CHOWN_INIT_CONTAINER"
+                "DEMO_USERS_ENABLED": "obj.data.DEMO_USERS_ENABLED"
+                "ANTIVIRUS_ENABLED": "obj.data.ANTIVIRUS_ENABLED"
+                "ANTIVIRUS_INFECTED_FILE_HANDLING": "obj.data.ANTIVIRUS_INFECTED_FILE_HANDLING"
+                "ANTIVIRUS_ICAP_URL": "obj.data.ANTIVIRUS_ICAP_URL"
+                "ANTIVIRUS_ICAP_SERVICE": "obj.data.ANTIVIRUS_ICAP_SERVICE"
+                "CLAMAV_REPLICA_COUNT": "obj.data.CLAMAV_REPLICA_COUNT"
+                "CLAMAV_RESOURCES_LIMITS_CPU": "obj.data.CLAMAV_RESOURCES_LIMITS_CPU"
+                "CLAMAV_RESOURCES_LIMITS_MEMORY": "obj.data.CLAMAV_RESOURCES_LIMITS_MEMORY"
+                "CLAMAV_RESOURCES_REQUESTS_CPU": "obj.data.CLAMAV_RESOURCES_REQUESTS_CPU"
+                "CLAMAV_RESOURCES_REQUESTS_MEMORY": "obj.data.CLAMAV_RESOURCES_REQUESTS_MEMORY"
+                "CLAMAV_PERSISTENCE_SIZE": "obj.data.CLAMAV_PERSISTENCE_SIZE"
+                "CLAMAV_FRESHCLAM_IMAGE_TAG": "obj.data.CLAMAV_FRESHCLAM_IMAGE_TAG"
+                "CLAMAV_CLAMD_IMAGE_TAG": "obj.data.CLAMAV_CLAMD_IMAGE_TAG"
+                "CLAMAV_ICAP_IMAGE_TAG": "obj.data.CLAMAV_ICAP_IMAGE_TAG"
+                "CLAMAV_ICAP_IMAGE_REPOSITORY": "obj.data.CLAMAV_ICAP_IMAGE_REPOSITORY"
+                "CLAMAV_ICAP_IMAGE_REGISTRY": "obj.data.CLAMAV_ICAP_IMAGE_REGISTRY"
+                "CLAMAV_ICAP_CLAMD_HOST": "obj.data.CLAMAV_ICAP_CLAMD_HOST"
+                "CLAMAV_MILTER_CLAMD_HOST": "obj.data.CLAMAV_MILTER_CLAMD_HOST"
             }
         }
     ]
     defaults: {
+        DEPLOY_TYPE: "Recreate"
+        MAX_SURGE: "25%"
+        MAX_UNAV: "25%"
         TAG: ""
         LDAP_ADMIN_PASSWORD: "admin"
         LDAP_CONFIG_PASSWORD: "config"
@@ -226,5 +250,23 @@ runtime: {
         RESOURCES_MEM_REQUEST: "128Mi"
         RESOURCES_CPU_LIMIT: "500m"
         RESOURCES_MEM_LIMIT: "512Mi"
+        
+        DEMO_USERS_ENABLED: false
+        ANTIVIRUS_ENABLED: false
+        ANTIVIRUS_INFECTED_FILE_HANDLING: "abort"
+        ANTIVIRUS_ICAP_URL: "http://opendesk-clamav-icap.clamav:1344"
+        ANTIVIRUS_ICAP_SERVICE: "avscan"
+        
+        CLAMAV_REPLICA_COUNT: "1"
+        CLAMAV_RESOURCES_LIMITS_CPU: "500m"
+        CLAMAV_RESOURCES_LIMITS_MEMORY: "512Mi"
+        CLAMAV_RESOURCES_REQUESTS_CPU: "250m"
+        CLAMAV_RESOURCES_REQUESTS_MEMORY: "256Mi"
+        CLAMAV_PERSISTENCE_SIZE: "10Gi"
+        CLAMAV_FRESHCLAM_IMAGE_TAG: "1.4.0"
+        CLAMAV_CLAMD_IMAGE_TAG: "1.4.0"
+        CLAMAV_ICAP_IMAGE_TAG: "0.5.10"
+        CLAMAV_ICAP_CLAMD_HOST: "opendesk-clamav-clamd"
+        CLAMAV_MILTER_CLAMD_HOST: "opendesk-clamav-clamd"
     }
 }
