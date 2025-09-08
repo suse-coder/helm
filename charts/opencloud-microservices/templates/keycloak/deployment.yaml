@@ -32,6 +32,7 @@ spec:
             - "--hostname=https://{{ .Values.keycloak.domain }}"
             - "--spi-connections-http-client-default-disable-trust-manager={{ .Values.insecure.oidcIdpInsecure }}"
             - "--import-realm"
+            - "--health-enabled=true"
 
           env:
             - name: OC_DOMAIN
@@ -72,6 +73,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: http-management
+              containerPort: 9000 
+              protocol: TCP
           volumeMounts:
             - name: script
               mountPath: /opt/keycloak/bin/docker-entrypoint-override.sh
@@ -88,14 +92,14 @@ spec:
               memory: 1Gi
           startupProbe:
             httpGet:
-              path: /
-              port: http
+              path: /health/ready
+              port: http-management
             periodSeconds: 10
             failureThreshold: 30
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /health/ready
+              port: http-management
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -103,7 +107,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /health/live
-              port: http
+              port: http-management
             initialDelaySeconds: 90
             periodSeconds: 10
             timeoutSeconds: 5
