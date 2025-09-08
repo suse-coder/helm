@@ -32,7 +32,7 @@ spec:
             - "--hostname=https://{{ .Values.keycloak.domain }}"
             - "--spi-connections-http-client-default-disable-trust-manager={{ .Values.insecure.oidcIdpInsecure }}"
             - "--import-realm"
-            - "--health-enabled=true"
+
           env:
             - name: OC_DOMAIN
               value: {{ .Values.externalDomain }}
@@ -88,13 +88,13 @@ spec:
               memory: 1Gi
           startupProbe:
             httpGet:
-              path: /realms/master
+              path: /
               port: http
             periodSeconds: 10
             failureThreshold: 30
           readinessProbe:
             httpGet:
-              path: /health/ready
+              path: /
               port: http
             initialDelaySeconds: 30
             periodSeconds: 10
