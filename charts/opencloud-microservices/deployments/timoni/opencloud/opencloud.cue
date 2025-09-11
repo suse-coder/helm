@@ -264,7 +264,7 @@ bundle: {
                             additionalInitContainers: [
                                 {
                                     name: "external-sites"
-                                    image: "opencloudeu/web-extensions:external-sites-latest"
+                                    image: "opencloudeu/web-extensions:external-sites-1.0.0"
                                     command: [
                                         "/bin/sh",
                                         "-c",
@@ -279,7 +279,7 @@ bundle: {
                                 },
                                 {
                                     name: "drawio"
-                                    image: "opencloudeu/web-extensions:draw-io-latest"
+                                    image: "opencloudeu/web-extensions:draw-io-1.0.0"
                                     command: [
                                         "/bin/sh",
                                         "-c",
@@ -294,7 +294,7 @@ bundle: {
                                 },
                                 {
                                     name: "importer"
-                                    image: "opencloudeu/web-extensions:importer-latest"
+                                    image: "opencloudeu/web-extensions:importer-1.0.0"
                                     command: [
                                         "/bin/sh",
                                         "-c",
@@ -309,7 +309,7 @@ bundle: {
                                 },
                                 {
                                     name: "jsonviewer"
-                                    image: "opencloudeu/web-extensions:json-viewer-latest"
+                                    image: "opencloudeu/web-extensions:json-viewer-1.0.0"
                                     command: [
                                         "/bin/sh",
                                         "-c",
@@ -324,7 +324,7 @@ bundle: {
                                 },
                                 {
                                     name: "progressbars"
-                                    image: "opencloudeu/web-extensions:progress-bars-latest"
+                                    image: "opencloudeu/web-extensions:progress-bars-1.0.0"
                                     command: [
                                         "/bin/sh",
                                         "-c",
@@ -339,7 +339,7 @@ bundle: {
                                 },
                                 {
                                     name: "unzip"
-                                    image: "opencloudeu/web-extensions:unzip-latest"
+                                    image: "opencloudeu/web-extensions:unzip-1.0.0"
                                     command: [
                                         "/bin/sh",
                                         "-c",
