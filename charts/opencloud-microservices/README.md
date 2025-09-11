@@ -132,7 +132,10 @@ This repository contains the following chart:
 - NATS service discovery required
 - Keycloak for authentication
 - MinIO for object storage
-- Integrated LDAP 
+- Integrated OpenLDAP 
+- Integrated ClamAV
+- Posix support
+- Helm and Timoni Chart for FluxCD
 - Document editing with Collabora and/or OnlyOffice
 - Slightly higher resource usage due to microservices pod overhead
 - See [architectural warnings](./charts/opencloud-microservices/README.md#architectural-considerations)
@@ -1113,7 +1116,7 @@ spec:
     - type: IPAddress
       value: 192.168.178.77  # Replace with your desired IP
   listeners:
-    - name: oc-proxy-https
+    - name: opencloud-proxy-https
       protocol: HTTPS
       port: 443
       hostname: "cloud.opencloud.test"
@@ -1125,7 +1128,7 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: oc-minio-https
+    - name: opencloud-minio-https
       protocol: HTTPS
       port: 443
       hostname: "minio.opencloud.test"
@@ -1137,7 +1140,7 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: oc-minio-console-https
+    - name: opencloud-minio-console-https
       protocol: HTTPS
       port: 443
       hostname: "console.minio.opencloud.test"
@@ -1149,7 +1152,7 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: oc-keycloak-https
+    - name: opencloud-keycloak-https
       protocol: HTTPS
       port: 443
       hostname: "keycloak.opencloud.test"
@@ -1161,7 +1164,7 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: oc-wopi-https
+    - name: opencloud-wopi-https
       protocol: HTTPS
       port: 443
       hostname: "wopiserver.opencloud.test"
@@ -1173,7 +1176,7 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: oc-collabora-https
+    - name: opencloud-collabora-https
       protocol: HTTPS
       port: 443
       hostname: "collabora.opencloud.test"
@@ -1185,7 +1188,7 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: oc-collaboration-https
+    - name: opencloud-collaboration-https
       protocol: HTTPS
       port: 443
       hostname: "collaboration.opencloud.test"
@@ -1197,7 +1200,7 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: oc-onlyoffice-https
+    - name: opencloud-onlyoffice-https
       protocol: HTTPS
       port: 443
       hostname: "onlyoffice.opencloud.test"

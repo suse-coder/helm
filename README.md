@@ -88,7 +88,10 @@ The complete OpenCloud deployment with all components for production use:
 - NATS service discovery required
 - Keycloak for authentication
 - MinIO for object storage
-- Integrated LDAP 
+- Integrated OpenLDAP 
+- Integrated ClamAV
+- Posix support
+- Helm and Timoni Chart for FluxCD
 - Document editing with Collabora and/or OnlyOffice
 - Slightly higher resource usage due to microservices pod overhead
 - See [architectural warnings](./charts/opencloud-microservices/README.md#architectural-considerations)
