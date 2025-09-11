@@ -14,11 +14,7 @@ bundle: {
                 }
                 chart: {
                     name:    "opencloud-microservices"
-<<<<<<< HEAD
-                    version: "0.3.0"
-=======
                     version: "0.3.2"
->>>>>>> posixfs-support-3
                 }
                 sync: {
                     timeout: 10
