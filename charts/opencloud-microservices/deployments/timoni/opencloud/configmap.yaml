@@ -34,14 +34,6 @@ data:
   GATEWAY_HTTPROUTE_ENABLED: "true"
 
   ###############################################################################
-  # OIDC Configuration
-  ###############################################################################
-  OIDC_IDP_INSECURE: "true"
-  OC_HTTP_API_INSECURE: "true"
-  APPS_INTEGRATION_ENABLED: "true"
-  WEB_OIDC_WEB_CLIENT_ID: "web"
-
-  ###############################################################################
   # Persistence StorageClass and AccessModes (global defaults)
   ###############################################################################
   PERSISTENCE_STORAGE_CLASS_NAME: ""
@@ -109,6 +101,10 @@ data:
   OIDC_USER_ID_CLAIM: "sub"
   OIDC_USER_ID_CLAIM_ATTRIBUTE_MAPPING: "username"
   OIDC_ROLE_ASSIGNMENT_CLAIM: "roles"
+  OIDC_IDP_INSECURE: "true"
+  OC_HTTP_API_INSECURE: "true"
+  APPS_INTEGRATION_ENABLED: "true"
+  WEB_OIDC_WEB_CLIENT_ID: "web"
 
   ###############################################################################
   # Search Configuration
