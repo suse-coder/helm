@@ -1847,6 +1847,14 @@ secretRefs:
   # -- The secret to secure the global notifications endpoint. Only system admins and users knowing that secret can call the global notifications POST/DELETE endpoints.
   globalNotificationsSecretRef:
 
+# @schema
+# type: boolean
+# required: true
+# @schema
+# -- ServiceAccount for Flux RBAC
+serviceAccount:
+  enabled: false
+
 # Custom CA chain
 # If a custom CA chain is needed for the communcation in between services or with external services like S3 or notification services.
 # The secret needs to be manually created.
@@ -6634,3 +6642,4 @@ keycloak:
     # @schema
     # -- Keycloak client ID
     clientId: "web"
+
