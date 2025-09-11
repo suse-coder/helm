@@ -10,7 +10,7 @@ kubectl apply -f ./charts/opencloud-microservices/deployments/timoni/openldap &&
 timoni bundle apply -f ./charts/opencloud-microservices/deployments/timoni/openldap/openldap.cue --runtime ./charts/opencloud-microservices/deployments/timoni/openldap/runtime.cue
 
 ## Install clamav
-kubectl apply -f ./charts/opencloud-microservices/deployments/timoni/openldap && \
-timoni bundle apply -f ./charts/opencloud-microservices/deployments/timoni/openldap/openldap.cue --runtime ./charts/opencloud-microservices/deployments/timoni/openldap/runtime.cue
+kubectl apply -f ./charts/opencloud-microservices/deployments/timoni/clamav && \
+timoni bundle apply -f ./charts/opencloud-microservices/deployments/timoni/clamav/clamav.cue --runtime ./charts/opencloud-microservices/deployments/timoni/clamav/runtime.cue
 
 
