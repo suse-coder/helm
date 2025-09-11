@@ -4,16 +4,6 @@ metadata:
   name: opencloud
 ---
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: openldap
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: clamav
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opencloud-config
@@ -101,16 +91,12 @@ data:
   # LDAP Configuration
   ###############################################################################
   LDAP_URI: "ldaps://openldap.openldap.svc.cluster.local:636"
-  LDAP_GLOBAL_DOMAIN: "opencloud.eu"
   LDAP_WRITEABLE: "true"
   LDAP_INSECURE: "true"
   LDAP_BIND_DN: "cn=admin,dc=opencloud,dc=eu"
   LDAP_USER_NAME_MATCH: "none"
   LDAP_USER_SCHEMA_ID: "openCloudUUID"
   LDAP_GROUP_SCHEMA_ID: "openCloudUUID"
-  OPENLDAP_LTB_PASSWD_ENABLED: "false"
-  OPENLDAP_REPLICATION_ENABLED: "false"
-  OPENLDAP_REPLICA_COUNT: "1"
 
   ###############################################################################
   # OIDC Configuration
@@ -137,10 +123,10 @@ data:
   ###############################################################################
   # Collabora Configuration
   ###############################################################################
+  COLLABORA_ENABLED: "true"
   COLLABORA_URI: "https://collabora.opencloud.test"
   COLLABORA_DOMAIN: "collabora.opencloud.test"
   COLLABORA_ICON_URI: "https://collabora.opencloud.test/favicon.ico"
-  COLLABORA_ENABLED: "true"
   COLLABORA_INSECURE: "true"
   COLLABORA_DISABLE_PROOF: "false"
   COLLABORA_INGRESS_ENABLED: "false"
@@ -150,10 +136,10 @@ data:
   ###############################################################################
   # OnlyOffice Configuration
   ###############################################################################
+  ONLYOFFICE_ENABLED: "false"
   ONLYOFFICE_URI: "https://onlyoffice.opencloud.test"
   ONLYOFFICE_DOMAIN: "onlyoffice.opencloud.test"
   ONLYOFFICE_ICON_URI: "https://onlyoffice.opencloud.test/web-apps/apps/documenteditor/main/resources/img/favicon.ico"
-  ONLYOFFICE_ENABLED: "false"
   ONLYOFFICE_INSECURE: "true"
   ONLYOFFICE_DISABLE_PROOF: "false"
   ONLYOFFICE_INGRESS_ENABLED: "false"
@@ -162,7 +148,6 @@ data:
   # WOPI Configuration
   ###############################################################################
   WOPI_INGRESS_DOMAIN: "wopi.opencloud.test"
-  WOPI_COLLABORA_TLS_HOST: "wopi-collabora.kube.opencloud.test"
 
   ###############################################################################
   # Antivirus
@@ -171,20 +156,3 @@ data:
   ANTIVIRUS_INFECTED_FILE_HANDLING: "abort"
   ANTIVIRUS_ICAP_URL: "http://clamav-icap.clamav:1344"
   ANTIVIRUS_ICAP_SERVICE: "avscan"
-
-  ###############################################################################
-  # ClamAV Configuration
-  ###############################################################################
-  CLAMAV_REPLICA_COUNT: "1"
-  CLAMAV_RESOURCES_LIMITS_CPU: "500m"
-  CLAMAV_RESOURCES_LIMITS_MEMORY: "512Mi"
-  CLAMAV_RESOURCES_REQUESTS_CPU: "250m"
-  CLAMAV_RESOURCES_REQUESTS_MEMORY: "256Mi"
-  CLAMAV_PERSISTENCE_SIZE: "10Gi"
-  CLAMAV_FRESHCLAM_IMAGE_TAG: "1.4.0"
-  CLAMAV_CLAMD_IMAGE_TAG: "1.4.0"
-  CLAMAV_ICAP_IMAGE_TAG: "0.5.10"
-  CLAMAV_ICAP_IMAGE_REPOSITORY: "bmi/opendesk/components/platform-development/images/clamav-icap"
-  CLAMAV_ICAP_IMAGE_REGISTRY: "registry.opencode.de"
-  CLAMAV_ICAP_CLAMD_HOST: "clamav-clamd"
-  CLAMAV_MILTER_CLAMD_HOST: "clamav-clamd"
