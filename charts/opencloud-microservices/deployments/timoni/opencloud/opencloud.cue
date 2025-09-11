@@ -37,9 +37,6 @@ bundle: {
                         level: string @timoni(runtime:string:OPENCLOUD_LOGGING_LEVEL)
                     }
                     externalDomain: string @timoni(runtime:string:EXTERNAL_DOMAIN)
-                    serviceAccount: {
-                        enabled: bool @timoni(runtime:bool:SERVICE_ACCOUNT_ENABLED)
-                    }
                     image: {
                         tag: string @timoni(runtime:string:TAG)
                     }

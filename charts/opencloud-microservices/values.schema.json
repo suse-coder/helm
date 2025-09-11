@@ -2,6 +2,20 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
   "properties": {
+     "serviceAccount": {
+      "additionalProperties": false,
+      "description": "ServiceAccount for Flux RBAC",
+      "properties": {
+        "enabled": {
+          "required": [],
+          "title": "enabled",
+          "type": "boolean"
+        }
+      },
+      "required": [],
+      "title": "serviceAccount",
+      "type": "object"
+    },
     "autoscaling": {
       "additionalProperties": true,
       "description": "Autoscaling settings.",
@@ -13363,21 +13377,5 @@
     "minio",
     "keycloak"
   ],
-  "properties": {
-    "serviceAccount": {
-      "additionalProperties": false,
-      "description": "ServiceAccount for Flux RBAC",
-      "properties": {
-        "enabled": {
-          "required": [],
-          "title": "enabled",
-          "type": "boolean"
-        }
-      },
-      "required": [],
-      "title": "serviceAccount",
-      "type": "object"
-    }
-  },
   "type": "object"
 }
