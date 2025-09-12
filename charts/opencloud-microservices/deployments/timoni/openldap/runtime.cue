@@ -1,16 +1,16 @@
 runtime: {
 	apiVersion: "v1alpha1"
-	name: "opencloud"
+	name: "openldap"
 	values: [
 		{
-			query: "k8s:v1:Secret:opencloud:opencloud-ldap-secrets"
+			query: "k8s:v1:Secret:openldap:opencloud-ldap-secrets"
 			for: {
 				"LDAP_ADMIN_PASSWORD":    "obj.data.adminPassword"
 				"LDAP_CONFIG_PASSWORD":   "obj.data.configPassword"
 			}
 		},
 		{
-			query: "k8s:v1:ConfigMap:opencloud:opencloud-config"
+			query: "k8s:v1:ConfigMap:openldap:opencloud-config"
 			for: {
 				"OPENLDAP_LTB_PASSWD_ENABLED": "obj.data.OPENLDAP_LTB_PASSWD_ENABLED"
 				"OPENLDAP_REPLICATION_ENABLED": "obj.data.OPENLDAP_REPLICATION_ENABLED"

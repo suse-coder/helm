@@ -7,7 +7,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opencloud-config
-  namespace: opencloud
+  namespace: clamav
 data:
   ###############################################################################
   # Persistence StorageClass and AccessModes (global defaults)

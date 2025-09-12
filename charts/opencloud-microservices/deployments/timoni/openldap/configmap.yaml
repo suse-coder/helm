@@ -7,7 +7,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opencloud-config
-  namespace: opencloud
+  namespace: openldap
 data:
   ###############################################################################
   # LDAP Configuration

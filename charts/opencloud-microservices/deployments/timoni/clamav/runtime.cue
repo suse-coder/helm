@@ -1,9 +1,9 @@
 runtime: {
 	apiVersion: "v1alpha1"
-	name: "opencloud"
+	name: "clamav"
 	values: [
 		{
-			query: "k8s:v1:ConfigMap:opencloud:opencloud-config"
+			query: "k8s:v1:ConfigMap:clamav:opencloud-config"
 			for: {
 				"PERSISTENCE_STORAGE_CLASS_NAME": "obj.data.PERSISTENCE_STORAGE_CLASS_NAME"
 				"PERSISTENCE_ACCESS_MODES":       "obj.data.PERSISTENCE_ACCESS_MODES"

@@ -1,6 +1,6 @@
 bundle: {
     apiVersion: "v1alpha1"
-    name:       "opencloud"
+    name:       "clamav"
     instances: {
         // "service-account": {
         //     module: url: "oci://ghcr.io/stefanprodan/modules/flux-tenant"
