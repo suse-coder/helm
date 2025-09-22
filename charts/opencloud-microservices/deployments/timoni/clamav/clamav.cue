@@ -65,12 +65,39 @@ bundle: {
                     }
                     icap: {
                         image: {
-                            registry: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_REGISTRY)
+                            registry:   string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_REGISTRY)
                             repository: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_REPOSITORY)
-                            tag: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_TAG)
+                            tag:        string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_TAG)
                         }
+
                         settings: {
                             clamdModClamdHost: string @timoni(runtime:string:CLAMAV_ICAP_CLAMD_HOST)
+                            tmpDir: "/icap-tmp"
+                        }
+
+                        extraVolumes: [
+                            {
+                                name: "icap-tmp"
+                                emptyDir: {}
+                            }
+                        ]
+
+                        extraVolumeMounts: [
+                            {
+                                name:      "icap-tmp"
+                                mountPath: "/icap-tmp"
+                            }
+                        ]
+
+                        lifecycleHooks: {
+                            postStart: {
+                                exec: {
+                                    command: [
+                                    "sh", "-c",
+                                    "rm -f /var/run/c-icap/c-icap.* /var/tmp/c-icap.* || true"
+                                    ]
+                                }
+                            }
                         }
                     }
                     milter: {
