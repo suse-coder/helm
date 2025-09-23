@@ -65,6 +65,14 @@ data:
   # NATS specific persistence options
   # When true, a root init container will chown the NATS data volume before the main container starts.
   NATS_PERSISTENCE_CHOWN_INIT_CONTAINER: "false"
+  
+  ###############################################################################
+  # Quotas
+  ###############################################################################
+  QUOTAS_DEFAULT: "300000000000"
+  QUOTAS_GUEST: "20000000000"
+  QUOTAS_USER: "300000000000"
+  QUOTAS_SPACE_ADMIN: "10000000000000"
 
   ###############################################################################
   # Internal Keycloak (for testing only)
