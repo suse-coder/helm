@@ -1,8 +1,15 @@
-<img src="https://helm.sh/img/helm.svg" width="100px" heigth="100px">
+> [!CAUTION]
+> ## Community Charts – Not Officially Supported
+> This repository is maintained by the community and is **not** officially supported by OpenCloud GmbH.  
+>  
+> For **production-ready Helm charts** designed for **mission-critical** workloads, please use the enterprise offering, available with a [business subscription](https://opencloud.eu/en/product/service-and-support).  
+>  
+> To access **production-ready helm charts** get in touch with us via [contact form](https://opencloud.eu/en/contact-us) or Email [sales@opencloud.eu](mailto:sales@opencloud.eu).
 
-# OpenCloud Helm Charts
+# Community Helm Charts
 
 Welcome to the **OpenCloud Helm Charts** repository! This repository is intended as a community-driven space for developing and maintaining Helm charts for deploying OpenCloud on Kubernetes.
+**Community Maintained** This repository is **community-maintained** and **not officially supported by OpenCloud GmbH**. Use at your own risk, and feel free to contribute to improve the project!
 
 ## 📑 Table of Contents
 
@@ -107,6 +114,4 @@ A lightweight single-container deployment for development and testing:
 
 This project is licensed under the **AGPLv3** licence. See the [LICENSE](LICENSE) file for more details.
 
-## Community Maintained
 
-This repository is **community-maintained** and **not officially supported by OpenCloud GmbH**. Use at your own risk, and feel free to contribute to improve the project!
