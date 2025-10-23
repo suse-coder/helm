@@ -223,7 +223,7 @@ The charts are also available in the GitHub Container Registry (GHCR) as OCI art
 Change the repo url to:  ghcr.io/opencloud-eu/helm-charts/opencloud-microservices
 
 ```bash
-cd charts/opencloud-microservices/deployments
+cd charts/opencloud-microservices/deployments/helm
 helmfile sync
 
 ```
