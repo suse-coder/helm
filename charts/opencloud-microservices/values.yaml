@@ -6577,7 +6577,7 @@ keycloak:
     # required: true
     # @schema
     # -- Keycloak image tag
-    tag: "25.0.0"
+    tag: "25.0.5"
     # PostgreSQL configuration
   postgresql:
     # @schema

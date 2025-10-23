@@ -88,21 +88,24 @@ spec:
           startupProbe:
             httpGet:
               path: /realms/master
-              port: http
+              port: 8080
+              scheme: HTTP
             periodSeconds: 10
             failureThreshold: 30
           readinessProbe:
             httpGet:
-              path: /health/ready
-              port: http
+              path: /realms/master
+              port: 8080
+              scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 12
           livenessProbe:
             httpGet:
-              path: /health/live
-              port: http
+              path: /realms/master
+              port: 8080
+              scheme: HTTP
             initialDelaySeconds: 90
             periodSeconds: 10
             timeoutSeconds: 5
