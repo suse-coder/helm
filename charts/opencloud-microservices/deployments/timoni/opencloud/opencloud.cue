@@ -116,8 +116,6 @@ bundle: {
                         quotas: {
                             default: string @timoni(runtime:string:QUOTAS_DEFAULT)
                             roles: {
-                                // Guest Role set to 20GB
-                                "38071a68-456a-4553-846a-fa67bf5596cc": int @timoni(runtime:number:QUOTAS_GUEST)
                                 // User Role set to 300GB
                                 "d7beeea8-8ff4-406b-8fb6-ab2dd81e6b11": int @timoni(runtime:number:QUOTAS_USER)
                                 // Space Administrator Role set to 100TB

@@ -89,6 +89,12 @@ releases:
               group:
                 schema:
                   id: openCloudUUID
+          quotas:
+            roles:
+              # User Role set to 2GB
+              'd7beeea8-8ff4-406b-8fb6-ab2dd81e6b11': 2000000000
+              # Space Administrator Role set to 100GB
+              '2aadd357-682c-406b-8874-293091995fdd': 100000000000
           appsIntegration:
             enabled: true
             wopiIntegration:
