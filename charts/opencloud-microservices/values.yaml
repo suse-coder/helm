@@ -190,6 +190,7 @@ http:
         - 'wss://${COMPANION_DOMAIN|companion.opencloud.test}/'
         - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
         - 'https://${KEYCLOOC_DOMAIN|keycloak.opencloud.test}/'
+        - 'https://update.opencloud.eu/'
       # @schema
       # type: array
       # items:

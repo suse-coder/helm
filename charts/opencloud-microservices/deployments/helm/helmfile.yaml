@@ -21,7 +21,8 @@ releases:
       - logging:
           level: debug # Set logging level for OpenCloud components.
       - externalDomain: cloud.opencloud.test # Main domain for OpenCloud access.
-
+      - image:  
+          tag: "3.6.0"
       # --- Core Components Configuration ---
       - keycloak:
           enabled: true # Enable Keycloak for authentication.
@@ -95,6 +96,12 @@ releases:
               'd7beeea8-8ff4-406b-8fb6-ab2dd81e6b11': 2000000000
               # Space Administrator Role set to 100GB
               '2aadd357-682c-406b-8874-293091995fdd': 100000000000
+          virusscan:
+            enabled: false
+            infectedFileHandling: "abort"
+            icap:
+              url: "http://clamav-icap.clamav:1344"
+              service: "avscan"
           appsIntegration:
             enabled: true
             wopiIntegration:
