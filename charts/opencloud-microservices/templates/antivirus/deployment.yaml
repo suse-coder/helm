@@ -51,7 +51,9 @@ spec:
             - name: ANTIVIRUS_INFECTED_FILE_HANDLING
               value: {{ .Values.features.virusscan.infectedFileHandling | quote }}
             - name: ANTIVIRUS_SCANNER_TYPE
-              value: "icap"
+              value: {{ .Values.features.virusscan.scannerType | quote }}
+            - name: ANTIVIRUS_CLAMAV_SOCKET
+              value: {{ .Values.features.virusscan.clamavSocket | quote }}
             - name: ANTIVIRUS_ICAP_SCAN_TIMEOUT
               value: {{ .Values.features.virusscan.icap.timeout | quote }}
             - name: ANTIVIRUS_ICAP_URL

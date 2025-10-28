@@ -1511,6 +1511,18 @@ features:
     # -- Sets a maximum file size for scans. Only this many bytes of a file will be scanned. 0 means unlimited and is the default.
     # Usable common abbreviations: [KB, KiB, MB, MiB, GB, GiB, TB, TiB, PB, PiB, EB, EiB], example: 2GB.
     maxScanSize:
+    # @schema
+    # enum: [icap, clamav]
+    # required: true
+    # @schema
+    # -- Scanner type to use for virus scanning. Supported options are 'icap' and 'clamav'.
+    scannerType: clamav
+    # @schema
+    # type: string
+    # required: true
+    # @schema
+    # -- ClamAV socket address for the antivirus service.
+    clamavSocket: tcp://clamav.clamav.svc.cluster.local:3310
     # Define icap parameters
     icap:
       # @schema

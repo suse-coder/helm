@@ -2,18 +2,18 @@ bundle: {
     apiVersion: "v1alpha1"
     name:       "clamav"
     instances: {
-        // "service-account": {
-        //     module: url: "oci://ghcr.io/stefanprodan/modules/flux-tenant"
-        //     namespace: "opencloud"
-        //     values: {
-        //         role: "namespace-admin"
-        //         resourceQuota: {
-        //             kustomizations: 100
-        //             helmreleases:   100
-        //         }
-        //     }
-        // },
-      
+        "service-account": {
+            module: url: "oci://ghcr.io/stefanprodan/modules/flux-tenant"
+            namespace: "clamav"
+            values: {
+                role: "namespace-admin"
+                resourceQuota: {
+                    kustomizations: 100
+                    helmreleases:   100
+                }
+            }
+        },
+       
         "clamav": {
             module: {
                 url: "oci://ghcr.io/stefanprodan/modules/flux-helm-release"
@@ -22,22 +22,58 @@ bundle: {
             namespace: "clamav"
             values: {
                 repository: {
-                    url: "https://gitlab.opencode.de/api/v4/projects/1381/packages/helm/stable"
+                    url: "https://wiremind.github.io/wiremind-helm-charts"
                 }
                 chart: {
-                    name:    "opendesk-clamav"
-                    version: "4.0.6"
+                    name:    "clamav"
+                    version: "3.7.1"
                 }
                 sync: {
                     timeout: 5
                     createNamespace: true
                 }
                 helmValues: {
-                    // Global persistence indirection (like _domainFilter pattern)
-                    _persistenceStorageClassName: string @timoni(runtime:string:PERSISTENCE_STORAGE_CLASS_NAME)
-                    _persistenceAccessModes:     string @timoni(runtime:string:PERSISTENCE_ACCESS_MODES)
+                    _persistenceStorageClassName: string @timoni(runtime:string:CLAMAV_PERSISTENCE_STORAGE_CLASS)
+                    _persistenceAccessModes:     string @timoni(runtime:string:CLAMAV_PERSISTENCE_ACCESS_MODES)
 
-                    replicaCount: string @timoni(runtime:string:CLAMAV_REPLICA_COUNT)
+                    replicaCount: int @timoni(runtime:number:CLAMAV_REPLICA_COUNT)
+                    
+                    updateStrategy: {
+                        type: string @timoni(runtime:string:CLAMAV_UPDATE_STRATEGY_TYPE)
+                        rollingUpdate: {
+                            partition: int @timoni(runtime:number:CLAMAV_UPDATE_STRATEGY_PARTITION)
+                        }
+                    }
+                    
+                    hpa: {
+                        enabled: bool @timoni(runtime:bool:CLAMAV_HPA_ENABLED)
+                    }
+                    
+                    podDisruptionBudget: {
+                        enabled: bool @timoni(runtime:bool:CLAMAV_PDB_ENABLED)
+                        minAvailable: int @timoni(runtime:number:CLAMAV_PDB_MIN_AVAILABLE)
+                    }
+                    
+                    topologySpreadConstraints: [
+                        {
+                            maxSkew: int @timoni(runtime:number:CLAMAV_TOPOLOGY_MAX_SKEW)
+                            topologyKey: string @timoni(runtime:string:CLAMAV_TOPOLOGY_KEY)
+                            whenUnsatisfiable: string @timoni(runtime:string:CLAMAV_TOPOLOGY_UNSATISFIABLE)
+                            labelSelector: {
+                                matchLabels: {
+                                    "app.kubernetes.io/name": "clamav"
+                                }
+                            }
+                        }
+                    ]
+                    
+                    persistentVolume: {
+                        enabled: bool @timoni(runtime:bool:CLAMAV_PERSISTENCE_ENABLED)
+                        size: string @timoni(runtime:string:CLAMAV_PERSISTENCE_SIZE)
+                        storageClass: "\(_persistenceStorageClassName)"
+                        accessModes: [ "\(_persistenceAccessModes)" ]
+                    }
+                    
                     resources: {
                         limits: {
                             cpu: string @timoni(runtime:string:CLAMAV_RESOURCES_LIMITS_CPU)
@@ -46,63 +82,6 @@ bundle: {
                         requests: {
                             cpu: string @timoni(runtime:string:CLAMAV_RESOURCES_REQUESTS_CPU)
                             memory: string @timoni(runtime:string:CLAMAV_RESOURCES_REQUESTS_MEMORY)
-                        }
-                    }
-                    persistence: {
-                        accessModes: [ "\(_persistenceAccessModes)" ]
-                        size: string @timoni(runtime:string:CLAMAV_PERSISTENCE_SIZE)
-                        storageClass: "\(_persistenceStorageClassName)"
-                    }
-                    freshclam: {
-                        image: {
-                            tag: string @timoni(runtime:string:CLAMAV_FRESHCLAM_IMAGE_TAG)
-                        }
-                    }
-                    clamd: {
-                        image: {
-                            tag: string @timoni(runtime:string:CLAMAV_CLAMD_IMAGE_TAG)
-                        }
-                    }
-                    icap: {
-                        image: {
-                            registry:   string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_REGISTRY)
-                            repository: string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_REPOSITORY)
-                            tag:        string @timoni(runtime:string:CLAMAV_ICAP_IMAGE_TAG)
-                        }
-
-                        settings: {
-                            clamdModClamdHost: string @timoni(runtime:string:CLAMAV_ICAP_CLAMD_HOST)
-                            tmpDir: "/icap-tmp"
-                        }
-
-                        extraVolumes: [
-                            {
-                                name: "icap-tmp"
-                                emptyDir: {}
-                            }
-                        ]
-
-                        extraVolumeMounts: [
-                            {
-                                name:      "icap-tmp"
-                                mountPath: "/icap-tmp"
-                            }
-                        ]
-
-                        lifecycleHooks: {
-                            postStart: {
-                                exec: {
-                                    command: [
-                                    "sh", "-c",
-                                    "rm -f /var/run/c-icap/c-icap.* /var/tmp/c-icap.* || true"
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                    milter: {
-                        settings: {
-                            clamdHost: string @timoni(runtime:string:CLAMAV_MILTER_CLAMD_HOST)
                         }
                     }
                 }

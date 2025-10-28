@@ -1930,12 +1930,32 @@
                 "string",
                 "null"
               ]
+            },
+            "scannerType": {
+              "default": "clamav",
+              "description": "Scanner type to use for virus scanning. Supported options are 'icap' and 'clamav'.",
+              "enum": [
+                "icap",
+                "clamav"
+              ],
+              "required": [],
+              "title": "scannerType",
+              "type": "string"
+            },
+            "clamavSocket": {
+              "default": "tcp://clamav.clamav.svc.cluster.local:3310",
+              "description": "ClamAV socket address for the antivirus service.",
+              "required": [],
+              "title": "clamavSocket",
+              "type": "string"
             }
           },
           "required": [
             "enabled",
             "infectedFileHandling",
-            "icap"
+            "icap",
+            "scannerType",
+            "clamavSocket"
           ],
           "title": "virusscan",
           "type": "object"

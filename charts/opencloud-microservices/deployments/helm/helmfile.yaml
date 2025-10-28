@@ -97,11 +97,10 @@ releases:
               # Space Administrator Role set to 100GB
               '2aadd357-682c-406b-8874-293091995fdd': 0
           virusscan:
-            enabled: false
+            enabled: true
             infectedFileHandling: "abort"
-            icap:
-              url: "http://clamav-icap.clamav:1344"
-              service: "avscan"
+            scannerType: "clamav"
+            clamavSocket: "tcp://clamav.clamav.svc.cluster.local:3310"
           appsIntegration:
             enabled: true
             wopiIntegration:
