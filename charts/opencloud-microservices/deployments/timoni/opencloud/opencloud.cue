@@ -108,10 +108,8 @@ bundle: {
                         virusscan: {
                             enabled: bool @timoni(runtime:bool:ANTIVIRUS_ENABLED)
                             infectedFileHandling: string @timoni(runtime:string:ANTIVIRUS_INFECTED_FILE_HANDLING)
-                            icap: {
-                                url: string @timoni(runtime:string:ANTIVIRUS_ICAP_URL)
-                                service: string @timoni(runtime:string:ANTIVIRUS_ICAP_SERVICE)
-                            }
+                            scannerType: string @timoni(runtime:string:ANTIVIRUS_SCANNER_TYPE)
+                            clamavSocket: string @timoni(runtime:string:ANTIVIRUS_CLAMAV_SOCKET)
                         }
                         quotas: {
                             default: string @timoni(runtime:string:QUOTAS_DEFAULT)

@@ -157,5 +157,7 @@ data:
   ###############################################################################
   ANTIVIRUS_ENABLED: "true"
   ANTIVIRUS_INFECTED_FILE_HANDLING: "abort"
+  ANTIVIRUS_SCANNER_TYPE: "clamav"
+  ANTIVIRUS_CLAMAV_SOCKET: "tcp://clamav.clamav.svc.cluster.local:3310"
   ANTIVIRUS_ICAP_URL: "http://clamav-icap.clamav:1344"
   ANTIVIRUS_ICAP_SERVICE: "avscan"
