@@ -28,7 +28,7 @@ data:
   CLAMAV_PERSISTENCE_ENABLED: "false"
   CLAMAV_PERSISTENCE_SIZE: "5000Mi"
   # For ReadWriteMany deployment, change to: ReadWriteMany
-  CLAMAV_PERSISTENCE_ACCESS_MODES: "ReadWriteMany"
+  CLAMAV_PERSISTENCE_ACCESS_MODES: "ReadWriteOnce"
   CLAMAV_PERSISTENCE_STORAGE_CLASS: ""
 
   ###############################################################################
