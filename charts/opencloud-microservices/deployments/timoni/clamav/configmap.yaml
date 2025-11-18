@@ -12,7 +12,7 @@ data:
   ###############################################################################
   # High Availability Configuration
   ###############################################################################
-  CLAMAV_REPLICA_COUNT: "1"
+  CLAMAV_REPLICA_COUNT: "2"
   CLAMAV_UPDATE_STRATEGY_TYPE: "RollingUpdate"
   CLAMAV_UPDATE_STRATEGY_PARTITION: "1"
   CLAMAV_HPA_ENABLED: "false"
@@ -25,10 +25,10 @@ data:
   ###############################################################################
   # Persistence Configuration
   ###############################################################################
-  CLAMAV_PERSISTENCE_ENABLED: "true"
-  CLAMAV_PERSISTENCE_SIZE: "100Mi"
+  CLAMAV_PERSISTENCE_ENABLED: "false"
+  CLAMAV_PERSISTENCE_SIZE: "5000Mi"
   # For ReadWriteMany deployment, change to: ReadWriteMany
-  CLAMAV_PERSISTENCE_ACCESS_MODES: "ReadWriteOnce"
+  CLAMAV_PERSISTENCE_ACCESS_MODES: "ReadWriteMany"
   CLAMAV_PERSISTENCE_STORAGE_CLASS: ""
 
   ###############################################################################
