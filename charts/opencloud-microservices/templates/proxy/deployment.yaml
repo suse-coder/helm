@@ -104,6 +104,12 @@ spec:
                   name: {{ include "secrets.serviceAccountSecret" . }}
                   key: service-account-secret
 
+            - name: OC_URL_SIGNING_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.urlSigningSecret" . }}
+                  key: url-signing-secret
+
             - name: PROXY_CSP_CONFIG_FILE_LOCATION
               value: /etc/opencloud/csp.yaml
 

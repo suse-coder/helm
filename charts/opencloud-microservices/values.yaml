@@ -1859,6 +1859,12 @@ secretRefs:
   # @schema
   # -- The secret to secure the global notifications endpoint. Only system admins and users knowing that secret can call the global notifications POST/DELETE endpoints.
   globalNotificationsSecretRef:
+  # @schema
+  # type: [string, null]
+  # required: false
+  # @schema
+  # -- Reference to an existing URL signing secret (see ref:Secrets#secrets).
+  urlSigningSecretRef:
 
 # @schema
 # type: boolean

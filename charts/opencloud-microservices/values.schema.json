@@ -2988,6 +2988,16 @@
             "string",
             "null"
           ]
+        },
+        "urlSigningSecretRef": {
+          "default": "",
+          "description": "Reference to an existing URL signing secret (see ref:Secrets#secrets).",
+          "required": [],
+          "title": "urlSigningSecretRef",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "required": [],

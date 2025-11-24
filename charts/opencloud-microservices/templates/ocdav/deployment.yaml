@@ -71,6 +71,12 @@ spec:
                   name: {{ include "secrets.machineAuthAPIKeySecret" . }}
                   key: machine-auth-api-key
 
+            - name: OC_URL_SIGNING_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.urlSigningSecret" . }}
+                  key: url-signing-secret
+
             {{- include "oc.caEnv" $ | nindent 12}}
 
           {{- include "oc.livenessProbe" . | nindent 10 }}
