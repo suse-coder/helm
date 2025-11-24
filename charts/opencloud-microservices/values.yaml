@@ -190,6 +190,7 @@ http:
         - 'wss://${COMPANION_DOMAIN|companion.opencloud.test}/'
         - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
         - 'https://${KEYCLOOC_DOMAIN|keycloak.opencloud.test}/'
+        - 'https://update.opencloud.eu/'
       # @schema
       # type: array
       # items:
@@ -1510,6 +1511,18 @@ features:
     # -- Sets a maximum file size for scans. Only this many bytes of a file will be scanned. 0 means unlimited and is the default.
     # Usable common abbreviations: [KB, KiB, MB, MiB, GB, GiB, TB, TiB, PB, PiB, EB, EiB], example: 2GB.
     maxScanSize:
+    # @schema
+    # enum: [icap, clamav]
+    # required: true
+    # @schema
+    # -- Scanner type to use for virus scanning. Supported options are 'icap' and 'clamav'.
+    scannerType: clamav
+    # @schema
+    # type: string
+    # required: true
+    # @schema
+    # -- ClamAV socket address for the antivirus service.
+    clamavSocket: tcp://clamav.clamav.svc.cluster.local:3310
     # Define icap parameters
     icap:
       # @schema
@@ -1846,6 +1859,20 @@ secretRefs:
   # @schema
   # -- The secret to secure the global notifications endpoint. Only system admins and users knowing that secret can call the global notifications POST/DELETE endpoints.
   globalNotificationsSecretRef:
+  # @schema
+  # type: [string, null]
+  # required: false
+  # @schema
+  # -- Reference to an existing URL signing secret (see ref:Secrets#secrets).
+  urlSigningSecretRef:
+
+# @schema
+# type: boolean
+# required: true
+# @schema
+# -- ServiceAccount for Flux RBAC
+serviceAccount:
+  enabled: false
 
 # Custom CA chain
 # If a custom CA chain is needed for the communcation in between services or with external services like S3 or notification services.
@@ -4547,7 +4574,7 @@ services:
       # -- Configures the storage driver. Possible values are "oc" and "decomposeds3".
       # The OC driver stores all data in the persistent volume if persistence is enabled.
       # The DECOMPOSEDS3 driver stores all metadata in the persistent volume and uploads blobs to s3 if persistence is enabled.
-      driver: decomposed
+      driver: posix
       driverConfig:
         decomposed:
           # @schema
@@ -5928,6 +5955,25 @@ onlyoffice:
     # -- Enable persistence
     enabled: true
     # @schema
+    # type: array
+    # items:
+    #   enum:
+    #     - ReadWriteOnce
+    #     - ReadOnlyMany
+    #     - ReadWriteMany
+    #     - ReadWriteOncePod
+    #   required: true
+    # @schema
+    # -- Persistent volume access modes.
+    accessModes:
+      - ReadWriteOnce
+    # @schema
+    # type: [string, null]
+    # required: false
+    # @schema
+    # -- Storage class to use. Uses the default storage class if not set.
+    storageClassName:
+    # @schema
     # type: string
     # required: true
     # @schema
@@ -6439,6 +6485,25 @@ minio:
     # MinIO persistence
     persistence:
       # @schema
+      # type: array
+      # items:
+      #   enum:
+      #     - ReadWriteOnce
+      #     - ReadOnlyMany
+      #     - ReadWriteMany
+      #     - ReadWriteOncePod
+      #   required: true
+      # @schema
+      # -- Persistent volume access modes.
+      accessModes:
+        - ReadWriteOnce
+      # @schema
+      # type: [string, null]
+      # required: false
+      # @schema
+      # -- Storage class to use. Uses the default storage class if not set.
+      storageClassName:
+      # @schema
       # type: string
       # required: true
       # @schema
@@ -6531,7 +6596,7 @@ keycloak:
     # required: true
     # @schema
     # -- Keycloak image tag
-    tag: "25.0.0"
+    tag: "25.0.5"
     # PostgreSQL configuration
   postgresql:
     # @schema
@@ -6596,3 +6661,4 @@ keycloak:
     # @schema
     # -- Keycloak client ID
     clientId: "web"
+
