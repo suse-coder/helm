@@ -200,20 +200,22 @@ bundle: {
                                 ]
                             }
                         }
+                        
+                        policies: {
+                            enabled: true
+                            policies: [{
+                                fileName: "proxy.rego"
+                                content: "\(_policiesProxyRego)"
+                            }, {
+                                fileName: "postprocessing.rego"
+                                content: "\(_policiesPostRego)"
+                            }, {
+                                fileName: "utils.rego"
+                                content: "\(_policiesUtilsRego)"
+                            }]
+                        }
                     }
-                    policies: {
-                        enabled: true
-                        policies: [{
-                            fileName: "proxy.rego"
-                            content: "\(_policiesProxyRego)"
-                        }, {
-                            fileName: "postprocessing.rego"
-                            content: "\(_policiesPostRego)"
-                        }, {
-                            fileName: "utils.rego"
-                            content: "\(_policiesUtilsRego)"
-                        }]
-                    }
+
                     services: {
                         nats: {
                             persistence: {
