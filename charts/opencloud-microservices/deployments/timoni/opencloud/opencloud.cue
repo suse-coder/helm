@@ -14,7 +14,7 @@ bundle: {
                 }
                 chart: {
                     name:    "opencloud-microservices"
-                    version: "0.3.10"
+                    version: "0.3.11"
                 }
                 sync: {
                     timeout: 10
