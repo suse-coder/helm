@@ -52,7 +52,7 @@ data:
   ONLYOFFICE_PERSISTENCE_SIZE: "2Gi"
   SEARCH_PERSISTENCE_ENABLED: "true"
   SEARCH_PERSISTENCE_SIZE: "10Gi"
-  STORAGE_USERS_BACKEND_DRIVER: "posix"
+  STORAGE_USERS_BACKEND_DRIVER: "decomposed"
   STORAGE_SYSTEM_PERSISTENCE_ENABLED: "true"
   STORAGE_SYSTEM_PERSISTENCE_SIZE: "5Gi"
   STORAGE_USERS_PERSISTENCE_ENABLED: "true"
@@ -161,3 +161,105 @@ data:
   ANTIVIRUS_CLAMAV_SOCKET: "tcp://clamav.clamav.svc.cluster.local:3310"
   ANTIVIRUS_ICAP_URL: "http://clamav-icap.clamav:1344"
   ANTIVIRUS_ICAP_SERVICE: "avscan"
+
+###############################################################################
+# Policies
+###############################################################################
+  FEATURES_POLICIES_ENABLED: "true"
+  FEATURES_POLICIES_PROXY_REGO: |
+    package proxy
+
+    import future.keywords.if
+    import data.utils
+
+    default granted := true
+
+    granted = false if {
+        input.request.method == "PUT"
+        pathPrefixes := [
+            "/dav",
+            "/remote.php/webdav",
+            "/remote.php/dav",
+            "/webdav",
+        ]
+        restricted := pathPrefixes[_]
+        startswith(input.request.path, restricted)
+        utils.is_extension_restricted(input.resource.name)
+    }
+
+    granted = false if {
+        input.request.method == "POST"
+        pathPrefixes := [
+            "/data",
+            "/dav",
+            "/remote.php/webdav",
+            "/remote.php/dav",
+            "/webdav",
+        ]
+        restricted := pathPrefixes[_]
+        startswith(input.request.path, restricted)
+        utils.is_extension_restricted(input.resource.name)
+    }
+  FEATURES_POLICIES_POSTPROCESSING_REGO: |
+    package postprocessing
+
+    import future.keywords.if
+    import data.utils
+
+    default granted := true
+
+    granted = false if {
+        utils.is_extension_restricted(input.resource.name)
+    }
+
+    granted = false if {
+        bytes := opencloud.resource.download(input.resource.url)
+        mimetype := opencloud.mimetype.detect(bytes)
+        utils.is_mimetype_restricted(mimetype)
+    }
+  FEATURES_POLICIES_UTILS_REGO: |
+    package utils
+
+    # For filename checking
+    RESTRICTED_EXTENSIONS := {
+        ".exe", ".dll", ".msi", ".scr", ".com", ".pif",
+        ".bat", ".cmd", ".ps1", ".vbs", ".vbe", ".wsh"
+    }
+
+    # For mimetype checking
+    RESTRICTED_EXTENSIONS_NO_DOT := {
+        "exe", "dll", "msi", "scr", "com", "pif",
+        "bat", "cmd", "ps1", "vbs", "vbe", "wsh"
+    }
+
+    # Direct MIME type check
+    RESTRICTED_MIMETYPES := {
+        "application/x-msdownload",
+        "application/x-dosexec",
+        "application/x-executable",
+        "application/vnd.microsoft.portable-executable",
+        "application/x-msi",
+        "application/x-ms-dos-executable",
+        "application/x-msdos-program",
+        "application/x-bat",
+        "application/bat",
+        "application/x-sh",
+        "application/x-shellscript"
+    }
+
+    # Check filename extension
+    is_extension_restricted(identifier) {
+        extension := RESTRICTED_EXTENSIONS[_]
+        endswith(lower(identifier), extension)
+    }
+
+    # Check MIME type
+    is_mimetype_restricted(mimetype) {
+        RESTRICTED_MIMETYPES[mimetype]
+    }
+
+    is_mimetype_restricted(mimetype) {
+        extensions := opencloud.mimetype.extensions(mimetype)
+        ext := extensions[_]
+        RESTRICTED_EXTENSIONS_NO_DOT[ext]
+    }

@@ -14,7 +14,7 @@ bundle: {
                 }
                 chart: {
                     name:    "opencloud-microservices"
-                    version: "0.3.8"
+                    version: "0.3.10"
                 }
                 sync: {
                     timeout: 10
@@ -24,6 +24,11 @@ bundle: {
                     // Global persistence indirection (like _domainFilter pattern)
                     _persistenceStorageClassName: string @timoni(runtime:string:PERSISTENCE_STORAGE_CLASS_NAME)
                     _persistenceAccessModes:     string @timoni(runtime:string:PERSISTENCE_ACCESS_MODES)
+
+                    // Policies postprocessing Rego content
+                    _policiesPostRego: string @timoni(runtime:string:FEATURES_POLICIES_POSTPROCESSING_REGO)
+                    _policiesProxyRego: string @timoni(runtime:string:FEATURES_POLICIES_PROXY_REGO)
+                    _policiesUtilsRego: string @timoni(runtime:string:FEATURES_POLICIES_UTILS_REGO)
 
                     deploymentStrategy: {
                         type: string @timoni(runtime:string:DEPLOY_TYPE)
@@ -195,6 +200,19 @@ bundle: {
                                 ]
                             }
                         }
+                    }
+                    policies: {
+                        enabled: true
+                        policies: [{
+                            fileName: "proxy.rego"
+                            content: "\(_policiesProxyRego)"
+                        }, {
+                            fileName: "postprocessing.rego"
+                            content: "\(_policiesPostRego)"
+                        }, {
+                            fileName: "utils.rego"
+                            content: "\(_policiesUtilsRego)"
+                        }]
                     }
                     services: {
                         nats: {
