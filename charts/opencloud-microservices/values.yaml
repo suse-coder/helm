@@ -96,7 +96,7 @@ initContainerImage:
   # required: true
   # @schema
   # -- Image pull policy
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 # Logging settings for OC services
 logging:
@@ -5174,7 +5174,7 @@ services:
         # required: true
         # @schema
         # -- Image pull policy
-        pullPolicy: IfNotPresent
+        pullPolicy: Always
     # @schema
     # $ref: schema/templates.json#/autoscalingTemplate
     # @schema
@@ -5917,7 +5917,7 @@ onlyoffice:
   # required: true
   # @schema
   # -- Image pull policy
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # WOPI settings
   wopi:
     # @schema
@@ -6205,7 +6205,7 @@ collabora:
   # required: true
   # @schema
   # -- Image pull policy
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
   # @schema
   # type: object
@@ -6278,7 +6278,7 @@ tika:
     # required: true
     # @schema
     # -- Image pull policy
-    pullPolicy: "IfNotPresent"
+    pullPolicy: "Always"
   service:
     # @schema
     # type: integer
