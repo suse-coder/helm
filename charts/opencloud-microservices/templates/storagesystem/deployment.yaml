@@ -32,11 +32,14 @@ spec:
         - name: {{ .appName }}
           {{- include "oc.image" $ | nindent 10 }}
           command: ["opencloud"]
-          args: ["storage-system", "server"]
+          args: ["server"]
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
             {{- include "oc.cacheStore" . | nindent 12 }}
+
+            - name: OC_RUN_SERVICES
+              value: storage-system
 
             # logging
             - name: STORAGE_SYSTEM_LOG_COLOR

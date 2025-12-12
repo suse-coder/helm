@@ -24,10 +24,13 @@ spec:
         - name: {{ $.appName }}
           {{- include "oc.image" $ | nindent 10 }}
           command: ["opencloud"]
-          args: ["collaboration", "server"]
+          args: ["server"]
           {{- include "oc.containerSecurityContext" $ | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" $ | nindent 12 }}
+
+            - name: OC_RUN_SERVICES
+              value: collaboration
 
             - name: COLLABORATION_LOG_COLOR
               value: {{ $.Values.logging.color | quote }}

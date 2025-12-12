@@ -40,10 +40,13 @@ spec:
         - name: {{ .appName }}
           {{- include "oc.image" $ | nindent 10 }}
           command: ["opencloud"]
-          args: ["idm", "server"]
+          args: ["server"]
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
+
+            - name: OC_RUN_SERVICES
+              value: idm
 
             - name: IDM_LOG_COLOR
               value: {{ .Values.logging.color | quote }}

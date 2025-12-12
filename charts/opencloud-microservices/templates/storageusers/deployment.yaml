@@ -32,13 +32,16 @@ spec:
         - name: {{ .appName }}
           {{- include "oc.image" $ | nindent 10 }}
           command: ["opencloud"]
-          args: ["storage-users", "server"]
+          args: ["server"]
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
             {{- include "oc.events" . | nindent 12 }}
             {{- include "oc.cacheStore" . | nindent 12 }}
             {{- include "oc.cors" . | nindent 12 }}
+
+            - name: OC_RUN_SERVICES
+              value: storage-users
 
             # set the gateway for the CLI tools
             - name: STORAGE_USERS_GATEWAY_GRPC_ADDR

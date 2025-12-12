@@ -20,10 +20,13 @@ spec:
         - name: {{ .appName }}
           {{- include "oc.image" $ | nindent 10 }}
           command: ["opencloud"]
-          args: ["auth-service", "server"]
+          args: ["server"]
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
+
+            - name: OC_RUN_SERVICES
+              value: authservice
 
             - name: AUTH_SERVICE_LOG_COLOR
               value: {{ .Values.logging.color | quote }}

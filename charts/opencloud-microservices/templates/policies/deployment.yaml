@@ -25,7 +25,7 @@ spec:
         - name: {{ .appName }}
           {{- include "oc.image" $ | nindent 10 }}
           command: ["opencloud"]
-          args: ["policies", "server"]
+          args: ["server"]
           securityContext:
             runAsNonRoot: true
             runAsUser: {{ .Values.securityContext.runAsUser }}
@@ -34,6 +34,9 @@ spec:
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
             {{- include "oc.events" . | nindent 12 }}
+
+            - name: OC_RUN_SERVICES
+              value: policies
 
             - name: POLICIES_LOG_COLOR
               value: {{ .Values.logging.color | quote }}

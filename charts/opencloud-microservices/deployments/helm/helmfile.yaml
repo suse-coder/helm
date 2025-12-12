@@ -22,7 +22,7 @@ releases:
           level: debug # Set logging level for OpenCloud components.
       - externalDomain: cloud.opencloud.test # Main domain for OpenCloud access.
       - image:  
-          tag: "4.0.0-rc.1"
+          tag: ""
       # --- Core Components Configuration ---
       - keycloak:
           enabled: true # Enable Keycloak for authentication.

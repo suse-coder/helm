@@ -21,12 +21,15 @@ spec:
         - name: {{ .appName }}
           {{- include "oc.image" $ | nindent 10 }}
           command: ["opencloud"]
-          args: ["notifications", "server"]
+          args: ["server"]
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
             {{- include "oc.events" . | nindent 12 }}
             {{- include "oc.persistentStore" . | nindent 12 }}
+
+            - name: OC_RUN_SERVICES
+              value: notifications
 
             - name: OC_DEFAULT_LANGUAGE
               value: {{ default "en" .Values.features.language.default | quote }}
