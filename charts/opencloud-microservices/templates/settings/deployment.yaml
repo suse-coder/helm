@@ -113,6 +113,12 @@ spec:
                   name: {{ include "secrets.storageSystemSecret" . }}
                   key: user-id
 
+            - name: OC_SYSTEM_USER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: api-key
+
             {{- include "oc.caEnv" $ | nindent 12}}
 
           {{- include "oc.livenessProbe" . | nindent 10 }}

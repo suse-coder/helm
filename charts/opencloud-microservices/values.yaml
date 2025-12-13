@@ -315,7 +315,7 @@ deploymentStrategy:
   # required: true
   # @schema
   # -- deployment strategy type to use. Can be "RollingUpdate" or "Recreate"
-  type: Recreate
+  type: RollingUpdate
   rollingUpdate:
     # @schema
     # oneOf:

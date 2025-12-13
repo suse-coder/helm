@@ -25,7 +25,7 @@ spec:
             {{- include "oc.events" . | nindent 12 }}
 
             - name: OC_RUN_SERVICES
-              value: appregistry
+              value: app-registry
 
             - name: APP_REGISTRY_LOG_COLOR
               value: {{ .Values.logging.color | quote }}

@@ -18,7 +18,7 @@ data:
   ###############################################################################
   # Deployment Strategy
   ###############################################################################
-  DEPLOY_TYPE: "Recreate"
+  DEPLOY_TYPE: "RollingUpdate"
   MAX_SURGE: "25%"
   MAX_UNAV: "25%"
 
@@ -47,7 +47,7 @@ data:
   IDM_PERSISTENCE_SIZE: "10Gi"
   
   # NATS Configuration
-  NATS_DEPLOY_TYPE: "Recreate"
+  NATS_DEPLOY_TYPE: "RollingUpdate"
   NATS_MAX_SURGE: "25%"
   NATS_MAX_UNAV: "25%"
   NATS_PERSISTENCE_ENABLED: "false"

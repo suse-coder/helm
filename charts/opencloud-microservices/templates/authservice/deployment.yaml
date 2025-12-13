@@ -27,7 +27,7 @@ spec:
             {{- include "oc.events" . | nindent 12 }}
 
             - name: OC_RUN_SERVICES
-              value: authservice
+              value: auth-service
 
             - name: AUTH_SERVICE_LOG_COLOR
               value: {{ .Values.logging.color | quote }}
