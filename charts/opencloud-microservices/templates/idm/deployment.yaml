@@ -24,6 +24,9 @@ spec:
           volumeMounts:
           - name: {{ include "oc.persistence.dataVolumeName" . }}
             mountPath: /var/lib/opencloud
+          - name: messaging-system-ca
+            mountPath: /etc/opencloud/messaging-system-ca
+            readOnly: true
       {{ end }}
         - name: init-dir #TODO: that should not be needed, needs fix in the idm service
           {{- include "oc.initContainerImage" $ | nindent 10 }}
@@ -35,6 +38,9 @@ spec:
             mountPath: /var/lib/opencloud
       {{- include "oc.priorityClassName" $.priorityClassName | nindent 6 }}
       {{- include "oc.hostAliases" $ | nindent 6 }}
+    - name: messaging-system-ca
+      mountPath: /etc/opencloud/messaging-system-ca
+      readOnly: true
       nodeSelector: {{ toYaml $.nodeSelector | nindent 8 }}
       containers:
         - name: {{ .appName }}
@@ -44,6 +50,7 @@ spec:
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
+            {{- include "oc.events" . | nindent 12 }}
 
             - name: OC_RUN_SERVICES
               value: idm
@@ -131,6 +138,9 @@ spec:
             - name: {{ include "oc.persistence.dataVolumeName" . }}
               mountPath: /var/lib/opencloud
             {{- include "oc.caPath" $ | nindent 12}}
+          - name: messaging-system-ca
+            mountPath: /etc/opencloud/messaging-system-ca
+            readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
@@ -139,4 +149,11 @@ spec:
             secretName: {{ include "secrets.ldapCertSecret" . }}
         {{- include "oc.caVolume" $ | nindent 8}}
         {{- include "oc.persistence.dataVolume" . | nindent 8 }}
+        - name: messaging-system-ca
+          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" . }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}
 {{- end }}

@@ -24,6 +24,7 @@ spec:
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
+            {{- include "oc.events" . | nindent 12 }}
 
             - name: OC_RUN_SERVICES
               value: authservice
@@ -52,18 +53,37 @@ spec:
             - name: AUTH_SERVICE_DEBUG_ADDR
               value: 0.0.0.0:9617
 
-            - name: AUTH_SERVICE_JWT_SECRET
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
 
-            - name: AUTH_SERVICE_SERVICE_ACCOUNT_ID
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
+
+            - name: OC_SERVICE_ACCOUNT_ID
               valueFrom:
                 configMapKeyRef:
                   name: {{ include "config.authService" . }}
                   key: service-account-id
-            - name: AUTH_SERVICE_SERVICE_ACCOUNT_SECRET
+                  
+            - name: OC_SERVICE_ACCOUNT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.serviceAccountSecret" . }}
@@ -85,9 +105,19 @@ spec:
             - name: tmp-volume
               mountPath: /tmp
             {{- include "oc.caPath" $ | nindent 12}}
+            - name: messaging-system-ca
+              mountPath: /etc/opencloud/messaging-system-ca
+              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
         - name: tmp-volume
           emptyDir: {}
         {{- include "oc.caVolume" $ | nindent 8}}
+        - name: messaging-system-ca
+          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" . }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}

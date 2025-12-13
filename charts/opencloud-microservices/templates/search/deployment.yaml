@@ -86,18 +86,19 @@ spec:
             - name: SEARCH_EXTRACTOR_CS3SOURCE_INSECURE
               value: {{ .Values.insecure.ocHttpApiInsecure | quote }}
 
-            - name: SEARCH_JWT_SECRET
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
 
-            - name: SEARCH_SERVICE_ACCOUNT_ID
+            - name: OC_SERVICE_ACCOUNT_ID
               valueFrom:
                 configMapKeyRef:
                   name: {{ include "config.authService" . }}
                   key: service-account-id
-            - name: SEARCH_SERVICE_ACCOUNT_SECRET
+                  
+            - name: OC_SERVICE_ACCOUNT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.serviceAccountSecret" . }}
@@ -105,6 +106,30 @@ spec:
 
             - name: OC_ASYNC_UPLOADS
               value: "true"
+
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.jwtSecret" . }}
+                  key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
 
             {{- include "oc.caEnv" $ | nindent 12}}
 

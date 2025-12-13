@@ -24,6 +24,7 @@ spec:
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
+            {{- include "oc.events" . | nindent 12 }}
 
             - name: OC_RUN_SERVICES
               value: groups
@@ -139,11 +140,29 @@ spec:
               value: {{ .Values.features.externalUserManagement.oidc.issuerURI | quote }}
             {{ end }}
 
-            - name: GROUPS_JWT_SECRET
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
 
             {{- include "oc.caEnv" $ | nindent 12}}
 
@@ -164,12 +183,22 @@ spec:
               mountPath: /etc/opencloud/ldap-ca
               readOnly: true
             {{- include "oc.caPath" $ | nindent 12}}
+            - name: messaging-system-ca
+              mountPath: /etc/opencloud/messaging-system-ca
+              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
         - name: tmp-volume
           emptyDir: {}
         - name: ldap-ca
+        - name: messaging-system-ca
+          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" . }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}
           {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) }}
           secret:
             secretName: {{ include "secrets.ldapCASecret" . }}

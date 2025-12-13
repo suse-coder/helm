@@ -60,12 +60,13 @@ spec:
             - name: USERLOG_DEBUG_ADDR
               value: 0.0.0.0:9210
 
-            - name: USERLOG_SERVICE_ACCOUNT_ID
+            - name: OC_SERVICE_ACCOUNT_ID
               valueFrom:
                 configMapKeyRef:
                   name: {{ include "config.authService" . }}
                   key: service-account-id
-            - name: USERLOG_SERVICE_ACCOUNT_SECRET
+
+            - name: OC_SERVICE_ACCOUNT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.serviceAccountSecret" . }}
@@ -79,7 +80,7 @@ spec:
                   key: notifications-secret
             {{- end }}
 
-            - name: USERLOG_JWT_SECRET
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
@@ -87,6 +88,30 @@ spec:
 
             - name: USERLOG_MAX_CONCURRENCY
               value: {{ .Values.services.userlog.maxConcurrency | quote }}
+
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.jwtSecret" . }}
+                  key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
 
             {{- include "oc.caEnv" $ | nindent 12}}
 

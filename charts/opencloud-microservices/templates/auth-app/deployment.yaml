@@ -1,4 +1,4 @@
-{{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameAuthApp" "appNameSuffix" "") -}}
+{{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameAuthService" "appNameSuffix" "") -}}
 apiVersion: apps/v1
 kind: Deployment
 {{ include "oc.metadata" . }}
@@ -24,55 +24,52 @@ spec:
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
+            {{- include "oc.events" . | nindent 12 }}
 
             - name: OC_RUN_SERVICES
-              value: authapp
+              value: authservice
 
-            - name: AUTH_APP_LOG_COLOR
+            - name: AUTH_SERVICE_LOG_COLOR
               value: {{ .Values.logging.color | quote }}
-            - name: AUTH_APP_LOG_LEVEL
+            - name: AUTH_SERVICE_LOG_LEVEL
               value: {{ .Values.logging.level | quote }}
-            - name: AUTH_APP_LOG_PRETTY
+            - name: AUTH_SERVICE_LOG_PRETTY
               value: {{ .Values.logging.pretty | quote }}
 
-            - name: AUTH_APP_TRACING_ENABLED
+            - name: AUTH_SERVICE_TRACING_ENABLED
               value: "{{ .Values.tracing.enabled }}"
-            - name: AUTH_APP_TRACING_TYPE
+            - name: AUTH_SERVICE_TRACING_TYPE
               value: {{ .Values.tracing.type | quote }}
-            - name: AUTH_APP_TRACING_ENDPOINT
+            - name: AUTH_SERVICE_TRACING_ENDPOINT
               value: {{ .Values.tracing.endpoint | quote }}
-            - name: AUTH_APP_TRACING_COLLECTOR
+            - name: AUTH_SERVICE_TRACING_COLLECTOR
               value: {{ .Values.tracing.collector | quote }}
 
-            - name: AUTH_APP_DEBUG_PPROF
+            - name: AUTH_SERVICE_DEBUG_PPROF
               value: {{ .Values.debug.profiling | quote }}
 
-            - name: AUTH_APP_GRPC_ADDR
-              value: 0.0.0.0:9246
-            - name: AUTH_APP_DEBUG_ADDR
-              value: 0.0.0.0:9245
-            - name: AUTH_APP_HTTP_ADDR
-              value: 0.0.0.0:9247
-            - name: AUTH_APP_HTTP_ROOT
-              value: /
+            - name: AUTH_SERVICE_GRPC_ADDR
+              value: 0.0.0.0:9616
+            - name: AUTH_SERVICE_DEBUG_ADDR
+              value: 0.0.0.0:9617
 
-            - name: AUTH_MACHINE_JWT_SECRET
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
 
-            - name: AUTH_APP_JWT_SECRET
+            - name: OC_MACHINE_AUTH_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "secrets.jwtSecret" . }}
-                  key: jwt-secret
-
-            - name: OC_SYSTEM_USER_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "secrets.storageSystemSecret" . }}
-                  key: api-key
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
 
             - name: OC_SYSTEM_USER_ID
               valueFrom:
@@ -80,7 +77,17 @@ spec:
                   name: {{ include "secrets.storageSystemSecret" . }}
                   key: user-id
 
-
+            - name: OC_SERVICE_ACCOUNT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "config.authService" . }}
+                  key: service-account-id
+                  
+            - name: OC_SERVICE_ACCOUNT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.serviceAccountSecret" . }}
+                  key: service-account-secret
 
             {{- include "oc.caEnv" $ | nindent 12}}
 
@@ -90,19 +97,32 @@ spec:
 
           ports:
             - name: grpc
-              containerPort: 9246
-            - name: http
-              containerPort: 9247
+              containerPort: 9616
             - name: metrics-debug
-              containerPort: 9245
+              containerPort: 9617
 
           volumeMounts:
             - name: tmp-volume
               mountPath: /tmp
+            - name: configs
+              mountPath: /etc/opencloud
             {{- include "oc.caPath" $ | nindent 12}}
+            - name: messaging-system-ca
+              mountPath: /etc/opencloud/messaging-system-ca
+              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
         - name: tmp-volume
           emptyDir: {}
+        - name: configs
+          configMap:
+            name: {{ .appName }}-config
         {{- include "oc.caVolume" $ | nindent 8}}
+        - name: messaging-system-ca
+          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" . }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}

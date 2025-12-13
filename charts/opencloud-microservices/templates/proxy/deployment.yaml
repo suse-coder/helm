@@ -83,24 +83,19 @@ spec:
             - name: PROXY_OIDC_INSECURE
               value: {{ .Values.insecure.oidcIdpInsecure | quote }}
 
-            - name: PROXY_JWT_SECRET
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
 
-            - name: PROXY_MACHINE_AUTH_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
-                  key: machine-auth-api-key
-
-            - name: PROXY_SERVICE_ACCOUNT_ID
+            - name: OC_SERVICE_ACCOUNT_ID
               valueFrom:
                 configMapKeyRef:
                   name: {{ include "config.authService" . }}
                   key: service-account-id
-            - name: PROXY_SERVICE_ACCOUNT_SECRET
+
+            - name: OC_SERVICE_ACCOUNT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.serviceAccountSecret" . }}
@@ -144,6 +139,30 @@ spec:
               value: {{ join "," .Values.features.externalUserManagement.oidc.spaceAssignment.mapping | quote }}
             {{- end }}
 
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.jwtSecret" . }}
+                  key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
+
             {{- include "oc.caEnv" $ | nindent 12}}
 
           {{- include "oc.livenessProbe" . | nindent 10 }}
@@ -160,10 +179,20 @@ spec:
             - name: configs
               mountPath: /etc/opencloud
             {{- include "oc.caPath" $ | nindent 12 }}
+            - name: messaging-system-ca
+              mountPath: /etc/opencloud/messaging-system-ca
+              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
         - name: configs
           configMap:
             name: {{ .appName }}-config
+        - name: messaging-system-ca
+          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" . }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}
         {{- include "oc.caVolume" $ | nindent 8 }}

@@ -239,12 +239,17 @@ releases:
                     enabled: false
       - services:
           nats:
+            deploymentStrategy:
+              type: Recreate
+              rollingUpdate:
+                maxSurge: 25%
+                maxUnavailable: 25%
             persistence:
-              enabled: true
+              enabled: false
               size: "10Gi"
               accessModes:
                 - ReadWriteOnce
-              storageClassName: 
+              storageClassName:
           search:
             persistence:
               enabled: true

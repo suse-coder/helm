@@ -218,6 +218,13 @@ bundle: {
 
                     services: {
                         nats: {
+                            deploymentStrategy: {
+                                type: string @timoni(runtime:string:NATS_DEPLOY_TYPE)
+                                rollingUpdate: {
+                                    maxSurge: string @timoni(runtime:string:NATS_MAX_SURGE)
+                                    maxUnavailable: string @timoni(runtime:string:NATS_MAX_UNAV)
+                                }
+                            }
                             persistence: {
                                 enabled: bool @timoni(runtime:bool:NATS_PERSISTENCE_ENABLED)
                                 size: string @timoni(runtime:string:NATS_PERSISTENCE_SIZE)

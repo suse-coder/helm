@@ -6145,6 +6145,71 @@
           "additionalProperties": false,
           "description": "NATS service. Not used if `messagingSystem.external.enabled` equals `true`.",
           "properties": {
+            "deploymentStrategy": {
+              "additionalProperties": false,
+              "description": "Per-service deploymentStrategy configuration. Overrides the default setting from `deploymentStrategy` if set.",
+              "properties": {
+                "rollingUpdate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "maxSurge": {
+                      "default": "25%",
+                      "description": "The maximum number of pods that can be scheduled above the desired number of pods.\nValue can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).",
+                      "oneOf": [
+                        {
+                          "required": [],
+                          "type": "string"
+                        },
+                        {
+                          "required": [],
+                          "type": "integer"
+                        }
+                      ],
+                      "required": [],
+                      "title": "maxSurge"
+                    },
+                    "maxUnavailable": {
+                      "default": "25%",
+                      "description": "The maximum number of pods that can be unavailable during the update.\nValue can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).",
+                      "oneOf": [
+                        {
+                          "required": [],
+                          "type": "string"
+                        },
+                        {
+                          "required": [],
+                          "type": "integer"
+                        }
+                      ],
+                      "required": [],
+                      "title": "maxUnavailable"
+                    }
+                  },
+                  "required": [
+                    "maxSurge",
+                    "maxUnavailable"
+                  ],
+                  "title": "rollingUpdate",
+                  "type": "object"
+                },
+                "type": {
+                  "default": "Recreate",
+                  "description": "deployment strategy type to use. Can be \"RollingUpdate\" or \"Recreate\"",
+                  "enum": [
+                    "RollingUpdate",
+                    "Recreate"
+                  ],
+                  "required": [],
+                  "title": "type"
+                }
+              },
+              "required": [
+                "type",
+                "rollingUpdate"
+              ],
+              "title": "deploymentStrategy",
+              "type": "object"
+            },
             "affinity": {
               "additionalProperties": true,
               "description": "Per-service affinity.",
@@ -6393,6 +6458,7 @@
             }
           },
           "required": [
+            "deploymentStrategy",
             "persistence",
             "image"
           ],

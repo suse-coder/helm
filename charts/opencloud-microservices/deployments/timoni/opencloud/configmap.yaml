@@ -45,8 +45,14 @@ data:
   ###############################################################################
   IDM_PERSISTENCE_ENABLED: "false"
   IDM_PERSISTENCE_SIZE: "10Gi"
-  NATS_PERSISTENCE_ENABLED: "true"
+  
+  # NATS Configuration
+  NATS_DEPLOY_TYPE: "Recreate"
+  NATS_MAX_SURGE: "25%"
+  NATS_MAX_UNAV: "25%"
+  NATS_PERSISTENCE_ENABLED: "false"
   NATS_PERSISTENCE_SIZE: "10Gi"
+  
   OCM_PERSISTENCE_ENABLED: "false"
   OCM_PERSISTENCE_SIZE: "1Gi"
   ONLYOFFICE_PERSISTENCE_SIZE: "2Gi"

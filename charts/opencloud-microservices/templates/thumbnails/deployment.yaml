@@ -36,6 +36,7 @@ spec:
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
+            {{- include "oc.events" . | nindent 12 }}
             {{- include "oc.cors" . |nindent 12 }}
 
             - name: OC_RUN_SERVICES
@@ -91,6 +92,30 @@ spec:
                   name: {{ include "secrets.thumbnailsSecret" . }}
                   key: thumbnails-transfer-secret
 
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.jwtSecret" . }}
+                  key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
+
             {{- include "oc.caEnv" $ | nindent 12}}
 
           {{- include "oc.livenessProbe" . | nindent 10 }}
@@ -109,8 +134,18 @@ spec:
             - name: {{ include "oc.persistence.dataVolumeName" . }}
               mountPath: /var/lib/opencloud
             {{- include "oc.caPath" $ | nindent 12}}
+            - name: messaging-system-ca
+              mountPath: /etc/opencloud/messaging-system-ca
+              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
         {{- include "oc.caVolume" $ | nindent 8}}
         {{- include "oc.persistence.dataVolume" . | nindent 8 }}
+        - name: messaging-system-ca
+          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" . }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}

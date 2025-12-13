@@ -6,8 +6,7 @@ kind: Deployment
 spec:
   {{- include "oc.selector" . | nindent 2 }}
   replicas: 1 #TODO: https://github.com/opencloud/opencloud-charts/issues/12
-  strategy:
-    type: Recreate
+  {{- include "oc.deploymentStrategy" . | nindent 2 }}
   template:
     {{- include "oc.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
@@ -65,6 +64,30 @@ spec:
 
             - name: NATS_DEBUG_ADDR
               value: 0.0.0.0:9234
+
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.jwtSecret" . }}
+                  key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
 
             {{- include "oc.caEnv" $ | nindent 12}}
 

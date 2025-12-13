@@ -22,6 +22,7 @@ spec:
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
+            {{- include "oc.events" . | nindent 12 }}
 
             - name: OC_RUN_SERVICES
               value: appregistry
@@ -50,11 +51,29 @@ spec:
             - name: APP_REGISTRY_DEBUG_ADDR
               value: 0.0.0.0:9243
 
-            - name: APP_REGISTRY_JWT_SECRET
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
 
             {{- include "oc.caEnv" $ | nindent 12}}
 
@@ -74,6 +93,9 @@ spec:
             - name: configs
               mountPath: /etc/opencloud
             {{- include "oc.caPath" $ | nindent 12}}
+            - name: messaging-system-ca
+              mountPath: /etc/opencloud/messaging-system-ca
+              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
@@ -82,4 +104,11 @@ spec:
         - name: configs
           configMap:
             name: {{ .appName }}-config
+        - name: messaging-system-ca
+          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" . }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}
         {{- include "oc.caVolume" $ | nindent 8}}

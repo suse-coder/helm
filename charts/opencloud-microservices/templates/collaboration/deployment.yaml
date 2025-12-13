@@ -28,6 +28,7 @@ spec:
           {{- include "oc.containerSecurityContext" $ | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" $ | nindent 12 }}
+            {{- include "oc.events" $ | nindent 12 }}
 
             - name: OC_RUN_SERVICES
               value: collaboration
@@ -94,11 +95,29 @@ spec:
             - name: COLLABORATION_WOPI_DISABLE_CHAT
               value: {{ default false $officeSuite.disableChat | quote }}
 
-            - name: COLLABORATION_JWT_SECRET
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" $ }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" $ }}
                   key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" $ }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" $ }}
+                  key: user-id
 
             - name: COLLABORATION_WOPI_SECRET
               valueFrom:
@@ -134,10 +153,20 @@ spec:
 
           volumeMounts:
             {{- include "oc.caPath" $ | nindent 12}}
+            - name: messaging-system-ca
+              mountPath: /etc/opencloud/messaging-system-ca
+              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
 
       volumes:
+        - name: messaging-system-ca
+          {{ if and ($.Values.messagingSystem.external.enabled) (not $.Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" $ }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}
         {{- include "oc.caVolume" $ | nindent 8}}
 {{ end }}
 {{ end }}

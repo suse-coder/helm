@@ -78,7 +78,7 @@ spec:
             - name: FRONTEND_READONLY_USER_ATTRIBUTES
               value: {{ tpl (join "," .Values.features.externalUserManagement.ldap.readOnlyAttributes) . | quote }}
             {{- end }}
-            - name: FRONTEND_JWT_SECRET
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
@@ -122,18 +122,19 @@ spec:
             - name: OC_EDITION
               value: {{ .Values.features.edition | quote }}
 
-            - name: FRONTEND_MACHINE_AUTH_API_KEY
+            - name: OC_MACHINE_AUTH_API_KEY 
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.machineAuthAPIKeySecret" . }}
                   key: machine-auth-api-key
 
-            - name: FRONTEND_SERVICE_ACCOUNT_ID
+            - name: OC_SERVICE_ACCOUNT_ID
               valueFrom:
                 configMapKeyRef:
                   name: {{ include "config.authService" . }}
                   key: service-account-id
-            - name: FRONTEND_SERVICE_ACCOUNT_SECRET
+
+            - name: OC_SERVICE_ACCOUNT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.serviceAccountSecret" . }}
@@ -144,6 +145,12 @@ spec:
                 secretKeyRef:
                   name: {{ include "secrets.transferSecret" . }}
                   key: transfer-secret
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
 
             {{- if .Values.features.quotas.max  }}
             - name: FRONTEND_MAX_QUOTA
@@ -200,6 +207,9 @@ spec:
             - name: configs
               mountPath: /etc/opencloud
             {{- include "oc.caPath" $ | nindent 12}}
+            - name: messaging-system-ca
+              mountPath: /etc/opencloud/messaging-system-ca
+              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
@@ -208,4 +218,11 @@ spec:
         - name: configs
           configMap:
             name: sharing-banned-passwords-{{ .appName }}
+        - name: messaging-system-ca
+          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" . }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}
         {{- include "oc.caVolume" $ | nindent 8}}

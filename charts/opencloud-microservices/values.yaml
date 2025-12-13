@@ -3204,6 +3204,36 @@ services:
   # -- NATS service. Not used if `messagingSystem.external.enabled` equals `true`.
   # @default -- see detailed service configuration options below
   nats:
+    # @schema
+    # $ref: schema/templates.json#/deploymentStrategyTemplate
+    # @schema
+    # -- Per-service deploymentStrategy configuration. Overrides the default setting from `deploymentStrategy` if set.
+    deploymentStrategy:
+      # @schema
+      # enum: [RollingUpdate, Recreate]
+      # required: true
+      # @schema
+      # -- deployment strategy type to use. Can be "RollingUpdate" or "Recreate"
+      type: Recreate
+      rollingUpdate:
+        # @schema
+        # oneOf:
+        #  - type: string
+        #  - type: integer
+        # required: true
+        # @schema
+        # -- The maximum number of pods that can be scheduled above the desired number of pods.
+        # Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).
+        maxSurge: 25%
+        # @schema
+        # oneOf:
+        #  - type: string
+        #  - type: integer
+        # required: true
+        # @schema
+        # -- The maximum number of pods that can be unavailable during the update.
+        # Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).
+        maxUnavailable: 25%
     # -- Persistence settings.
     # @default -- see detailed persistence configuration options below
     persistence:

@@ -51,22 +51,41 @@ spec:
             - name: CLIENTLOG_DEBUG_ADDR
               value: 0.0.0.0:9260
 
-            - name: CLIENTLOG_SERVICE_ACCOUNT_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "config.authService" . }}
-                  key: service-account-id
-            - name: CLIENTLOG_SERVICE_ACCOUNT_SECRET
+            - name: OC_TRANSFER_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "secrets.serviceAccountSecret" . }}
-                  key: service-account-secret
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
 
-            - name: CLIENTLOG_JWT_SECRET
+            - name: OC_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
+
+            - name: OC_SERVICE_ACCOUNT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "config.authService" . }}
+                  key: service-account-id
+                  
+            - name: OC_SERVICE_ACCOUNT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.serviceAccountSecret" . }}
+                  key: service-account-secret
 
             {{- include "oc.caEnv" $ | nindent 12}}
 

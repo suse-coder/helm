@@ -139,12 +139,13 @@ spec:
             - name: STORAGE_USERS_PURGE_TRASH_BIN_PROJECT_DELETE_BEFORE
               value: {{ .Values.services.storageusers.maintenance.purgeExpiredTrashBinItems.projectDeleteBefore | quote }}
 
-            - name: STORAGE_USERS_SERVICE_ACCOUNT_ID
+            - name: OC_SERVICE_ACCOUNT_ID
               valueFrom:
                 configMapKeyRef:
                   name: {{ include "config.authService" . }}
                   key: service-account-id
-            - name: STORAGE_USERS_SERVICE_ACCOUNT_SECRET
+
+            - name: OC_SERVICE_ACCOUNT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.serviceAccountSecret" . }}
@@ -160,18 +161,6 @@ spec:
                   name: {{ include "config.storageUsers" . }}
                   key: storage-uuid
 
-            - name: STORAGE_USERS_JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "secrets.jwtSecret" . }}
-                  key: jwt-secret
-
-            - name: OC_TRANSFER_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "secrets.transferSecret" . }}
-                  key: transfer-secret
-
             {{- if .Values.features.quotas.max }}
             - name: STORAGE_USERS_OC_MAX_QUOTA
               value: {{ .Values.features.quotas.max | quote }}
@@ -184,6 +173,30 @@ spec:
 
             - name: STORAGE_USERS_DATA_GATEWAY_URL
               value: "http://{{ .appNameFrontend }}:9140/data/"
+
+            - name: OC_TRANSFER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.transferSecret" . }}
+                  key: transfer-secret
+
+            - name: OC_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.jwtSecret" . }}
+                  key: jwt-secret
+
+            - name: OC_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.machineAuthAPIKeySecret" . }}
+                  key: machine-auth-api-key
+
+            - name: OC_SYSTEM_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.storageSystemSecret" . }}
+                  key: user-id
 
             {{- include "oc.caEnv" $ | nindent 12}}
 

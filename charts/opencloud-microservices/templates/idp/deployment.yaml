@@ -26,6 +26,7 @@ spec:
           {{- include "oc.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "oc.serviceRegistry" . | nindent 12 }}
+            {{- include "oc.events" . | nindent 12 }}
 
             - name: OC_RUN_SERVICES
               value: idp
@@ -97,6 +98,9 @@ spec:
               mountPath: /etc/opencloud/idp
               readOnly: true
             {{- include "oc.caPath" $ | nindent 12}}
+          - name: messaging-system-ca
+            mountPath: /etc/opencloud/messaging-system-ca
+            readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
@@ -109,4 +113,11 @@ spec:
           secret:
             secretName: {{ include "secrets.idpSecret" . }}
         {{- include "oc.caVolume" $ | nindent 8}}
+        - name: messaging-system-ca
+          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
+          secret:
+            secretName: {{ include "secrets.messagingSystemCASecret" . }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}
 {{- end }}
