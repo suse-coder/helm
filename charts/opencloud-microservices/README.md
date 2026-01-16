@@ -4,45 +4,6 @@
 
 Welcome to the **OpenCloud Helm Charts** repository! This repository is intended as a community-driven space for developing and maintaining Helm charts for deploying OpenCloud on Kubernetes.
 
-## ⚠️ IMPORTANT: Architectural Considerations
-
-This chart implements a **pod-per-service architecture** where each OpenCloud service runs in its own Kubernetes pod. 
-
-
-### Problems with Pod-Per-Service:
-1. **Service Discovery Complexity**: Requires complex service mesh configuration
-2. **Resource Overhead**: Each pod needs its own container runtime overhead
-3. **Debugging Complexity**: Issues become harder to trace across multiple pods
-4. **Unnecessary Separation**: Most services don't need isolation
-
-### Recommended Approach:
-The standard `opencloud` chart (found in `charts/opencloud`) groups services intelligently:
-- Frontend services (web, graph, ocdav, ocs) in one pod
-- Backend services (postprocessing, eventhistory) in another pod
-- Only security-critical services (antivirus, thumbnails, tika) isolated
-
-## When to Use This Chart
-
-Only consider this chart if you:
-- ✅ Have specific regulatory requirements for service isolation
-- ✅ Need fine-grained resource limits per service
-- ✅ Have expertise in Kubernetes service mesh debugging
-- ✅ Accept higher resource usage and complexity
-- ✅ Are prepared for NATS HA setup
-
-Otherwise, use the standard `opencloud` chart (found in `charts/opencloud`).
-
-## Scaling Limitations
-
-The following services CANNOT be scaled beyond 1 replica:
-
-| Service | Reason | Tracking Issue |
-|---------|--------|----------------|
-| IDM | Embedded LDAP doesn't support replication | |
-| IDP | Depends on IDM | |
-| Search | Uses BoltDB (single-writer database) | |
-| OCM | Federation service state |  |
-| NATS | Embedded NATS (use external for HA) |  |
 
 ## 📑 Table of Contents
 
@@ -186,7 +147,20 @@ Set all of the following to strong, unique values before deploying to production
   - Note: Tokens used by OnlyOffice/WOPI integration
 
 
-## 🚀 Installation
+## Scaling Limitations
+
+The following services CANNOT be scaled beyond 1 replica:
+
+| Service | Reason | Tracking Issue |
+|---------|--------|----------------|
+| IDM | Embedded LDAP doesn't support replication | |
+| IDP | Depends on IDM | |
+| Search | Uses BoltDB (single-writer database) | |
+| OCM | Federation service state |  |
+| NATS | Embedded NATS (use external for HA) |  |
+
+
+## Installation
 
 You can install the Helm charts either directly from this Git repository or from the OCI registry.
 
