@@ -133,9 +133,6 @@ spec:
               containerPort: 9194
 
           volumeMounts:
-            - name: messaging-system-ca
-              mountPath: /etc/opencloud/messaging-system-ca
-              readOnly: true
           {{- if or .Values.features.roles.customRoles .Values.features.roles.customRolesConfigRef }}
             - name: oc-role-config
               mountPath: /etc/opencloud
@@ -155,12 +152,4 @@ spec:
           configMap:
             name: {{ .Values.features.roles.customRolesConfigRef }}
       {{- end }}
-
-        - name: messaging-system-ca
-          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
-          secret:
-            secretName: {{ include "secrets.messagingSystemCASecret" . }}
-          {{ else }}
-          emptyDir: {}
-          {{ end }}
         {{- include "oc.caVolume" $ | nindent 8}}

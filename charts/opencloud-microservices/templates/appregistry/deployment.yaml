@@ -93,9 +93,6 @@ spec:
             - name: configs
               mountPath: /etc/opencloud
             {{- include "oc.caPath" $ | nindent 12}}
-            - name: messaging-system-ca
-              mountPath: /etc/opencloud/messaging-system-ca
-              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
@@ -104,11 +101,4 @@ spec:
         - name: configs
           configMap:
             name: {{ .appName }}-config
-        - name: messaging-system-ca
-          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
-          secret:
-            secretName: {{ include "secrets.messagingSystemCASecret" . }}
-          {{ else }}
-          emptyDir: {}
-          {{ end }}
         {{- include "oc.caVolume" $ | nindent 8}}

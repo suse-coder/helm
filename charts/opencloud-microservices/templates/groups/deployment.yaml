@@ -183,26 +183,10 @@ spec:
               mountPath: /etc/opencloud/ldap-ca
               readOnly: true
             {{- include "oc.caPath" $ | nindent 12}}
-            - name: messaging-system-ca
-              mountPath: /etc/opencloud/messaging-system-ca
-              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
         - name: tmp-volume
           emptyDir: {}
         - name: ldap-ca
-        - name: messaging-system-ca
-          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
-          secret:
-            secretName: {{ include "secrets.messagingSystemCASecret" . }}
-          {{ else }}
-          emptyDir: {}
-          {{ end }}
-          {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) }}
-          secret:
-            secretName: {{ include "secrets.ldapCASecret" . }}
-          {{ else }}
-          emptyDir: {}
-          {{ end }}
         {{- include "oc.caVolume" $ | nindent 8}}
