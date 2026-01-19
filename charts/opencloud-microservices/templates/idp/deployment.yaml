@@ -98,9 +98,9 @@ spec:
               mountPath: /etc/opencloud/idp
               readOnly: true
             {{- include "oc.caPath" $ | nindent 12}}
-          - name: messaging-system-ca
-            mountPath: /etc/opencloud/messaging-system-ca
-            readOnly: true
+            - name: messaging-system-ca
+              mountPath: /etc/opencloud/messaging-system-ca
+              readOnly: true
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
