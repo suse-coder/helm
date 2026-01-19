@@ -198,10 +198,21 @@ bundle: {
                                         }
                                     }
                                 ]
-                            }
-                        }
-                        
-                        policies: {
+						    }
+						}
+
+						emailNotifications: {
+							enabled: bool @timoni(runtime:bool:EMAIL_NOTIFICATIONS_ENABLED)
+							smtp: {
+								host: string @timoni(runtime:string:SMTP_HOST)
+								port: string @timoni(runtime:string:SMTP_PORT)
+								sender: string @timoni(runtime:string:SMTP_SENDER)
+								authentication: string @timoni(runtime:string:SMTP_AUTHENTICATION)
+								encryption: string @timoni(runtime:string:SMTP_ENCRYPTION)
+							}
+						}
+
+						policies: {
                             enabled: true
                             policies: [{
                                 fileName: "proxy.rego"

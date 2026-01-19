@@ -168,9 +168,19 @@ data:
   ANTIVIRUS_ICAP_URL: "http://clamav-icap.clamav:1344"
   ANTIVIRUS_ICAP_SERVICE: "avscan"
 
-###############################################################################
-# Policies
-###############################################################################
+  ###############################################################################
+  # SMTP Configuration
+  ###############################################################################
+  EMAIL_NOTIFICATIONS_ENABLED: "false"
+  SMTP_HOST: ""
+  SMTP_PORT: ""
+  SMTP_SENDER: ""
+  SMTP_AUTHENTICATION: "auto"
+  SMTP_ENCRYPTION: "ssltls"
+
+  ###############################################################################
+  # Policies
+  ###############################################################################
   FEATURES_POLICIES_ENABLED: "true"
   FEATURES_POLICIES_PROXY_REGO: |
     package proxy
@@ -193,19 +203,6 @@ data:
         utils.is_extension_restricted(input.resource.name)
     }
 
-    granted = false if {
-        input.request.method == "POST"
-        pathPrefixes := [
-            "/data",
-            "/dav",
-            "/remote.php/webdav",
-            "/remote.php/dav",
-            "/webdav",
-        ]
-        restricted := pathPrefixes[_]
-        startswith(input.request.path, restricted)
-        utils.is_extension_restricted(input.resource.name)
-    }
   FEATURES_POLICIES_POSTPROCESSING_REGO: |
     package postprocessing
 
@@ -223,6 +220,7 @@ data:
         mimetype := opencloud.mimetype.detect(bytes)
         utils.is_mimetype_restricted(mimetype)
     }
+
   FEATURES_POLICIES_UTILS_REGO: |
     package utils
 
