@@ -29,9 +29,6 @@ spec:
           volumeMounts:
           - name: {{ include "oc.persistence.dataVolumeName" . }}
             mountPath: /var/lib/opencloud
-          - name: messaging-system-ca
-            mountPath: /etc/opencloud/messaging-system-ca
-            readOnly: true
       {{- end }}
       {{- with $.Values.services.web.additionalInitContainers }}
         {{ toYaml . | nindent 8 }}
@@ -237,9 +234,6 @@ spec:
           volumeMounts:
             - name: configs
               mountPath: /etc/opencloud
-            - name: messaging-system-ca
-              mountPath: /etc/opencloud/messaging-system-ca
-              readOnly: true
             {{- if .Values.configRefs.webThemeConfigRef }}
             - name: theme
               mountPath: "/var/lib/opencloud/web/assets/themes/{{ .Values.services.web.config.theme.themeNameConfigRefs }}"
@@ -259,13 +253,6 @@ spec:
         - name: configs
           configMap:
             name: {{ .appName }}-config
-        - name: messaging-system-ca
-          {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
-          secret:
-            secretName: {{ include "secrets.messagingSystemCASecret" . }}
-          {{ else }}
-          emptyDir: {}
-          {{ end }}
         {{- with .Values.configRefs.webThemeConfigRef }}
         - name: theme
           configMap:
