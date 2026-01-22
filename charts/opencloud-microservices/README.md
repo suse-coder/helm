@@ -98,8 +98,6 @@ This repository contains the following chart:
 - Posix support
 - Helm and Timoni Chart for FluxCD
 - Document editing with Collabora and/or OnlyOffice
-- Slightly higher resource usage due to microservices pod overhead
-- See [architectural warnings](./charts/opencloud-microservices/README.md#architectural-considerations)
 
 # 🔐 Mandatory secret changes for production
 

@@ -75,18 +75,6 @@ We recommend pinning to specific chart versions and thoroughly testing updates b
 
 This repository contains the following charts:
 
-### Production Chart (`charts/opencloud`)
-
-The complete OpenCloud deployment with all components for production use:
-
-- Full microservices architecture
-- Keycloak for authentication
-- MinIO for object storage
-- Document editing with Collabora and/or OnlyOffice
-- Full Gateway API integration
-
-[View Production Chart Documentation](./charts/opencloud/README.md)
-
 ### Microservices Chart (`charts/opencloud-microservices`)
 
 **Architecture**: Pod-per-service
@@ -100,8 +88,18 @@ The complete OpenCloud deployment with all components for production use:
 - Posix support
 - Helm and Timoni Chart for FluxCD
 - Document editing with Collabora and/or OnlyOffice
-- Slightly higher resource usage due to microservices pod overhead
-- See [architectural warnings](./charts/opencloud-microservices/README.md#architectural-considerations)
+
+### Production Chart (`charts/opencloud`)
+
+The complete OpenCloud deployment with all components for production use:
+
+- Full microservices architecture
+- Keycloak for authentication
+- MinIO for object storage
+- Document editing with Collabora and/or OnlyOffice
+- Full Gateway API integration
+
+[View Production Chart Documentation](./charts/opencloud/README.md)
 
 ### Development Chart (`charts/opencloud-dev`)
 
