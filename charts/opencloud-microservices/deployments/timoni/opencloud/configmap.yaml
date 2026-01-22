@@ -161,7 +161,7 @@ data:
   ###############################################################################
   # Antivirus
   ###############################################################################
-  ANTIVIRUS_ENABLED: "true"
+  ANTIVIRUS_ENABLED: "false"
   ANTIVIRUS_INFECTED_FILE_HANDLING: "abort"
   ANTIVIRUS_SCANNER_TYPE: "clamav"
   ANTIVIRUS_CLAMAV_SOCKET: "tcp://clamav.clamav.svc.cluster.local:3310"
@@ -175,7 +175,7 @@ data:
   SMTP_HOST: ""
   SMTP_PORT: ""
   SMTP_SENDER: ""
-  SMTP_AUTHENTICATION: "auto"
+  SMTP_AUTHENTICATION: "none"
   SMTP_ENCRYPTION: "ssltls"
 
   ###############################################################################

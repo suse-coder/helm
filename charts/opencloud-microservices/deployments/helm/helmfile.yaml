@@ -97,10 +97,18 @@ releases:
               # Space Administrator Role set to 100GB
               '2aadd357-682c-406b-8874-293091995fdd': 0
           virusscan:
-            enabled: true
+            enabled: false
             infectedFileHandling: "abort"
             scannerType: "clamav"
             clamavSocket: "tcp://clamav.clamav.svc.cluster.local:3310"
+          emailNotifications:
+            enabled: false
+            smtp:
+              host: 
+              port: 
+              sender: 
+              authentication: none
+              encryption: ssltls
           policies:
             enabled: true
             policies:
