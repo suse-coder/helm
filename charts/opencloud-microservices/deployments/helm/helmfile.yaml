@@ -47,6 +47,7 @@ releases:
 
       - collabora:
           enabled: true
+          tag: 25.04.8.3.1
           domain: collabora.opencloud.test # Domain for Collabora.
 
       # --- Networking Configuration ---
@@ -110,7 +111,7 @@ releases:
               authentication: none
               encryption: ssltls
           policies:
-            enabled: true
+            enabled: false
             policies:
               - fileName: proxy.rego
                 content: |
@@ -528,7 +529,6 @@ releases:
             objectClass: olcSchemaConfig
             cn: opencloud
             olcObjectIdentifier: openCloudOid 1.3.6.1.4.1.63016
-            # We'll use openCloudOid:1 subarc for LDAP related stuff
             #   openCloudOid:1.1 for AttributeTypes and openCloudOid:1.2 for ObjectClasses
             olcAttributeTypes: ( openCloudOid:1.1.1 NAME 'openCloudUUID'
               DESC 'A non-reassignable and persistent account ID)'
