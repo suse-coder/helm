@@ -135,6 +135,7 @@ data:
   COLLABORA_ENABLED: "true"
   COLLABORA_URI: "https://collabora.opencloud.test"
   COLLABORA_DOMAIN: "collabora.opencloud.test"
+  COLLABORA_TAG: "25.04.8.3.1"
   COLLABORA_ICON_URI: "https://collabora.opencloud.test/favicon.ico"
   COLLABORA_INSECURE: "true"
   COLLABORA_DISABLE_PROOF: "false"

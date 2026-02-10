@@ -67,6 +67,7 @@ bundle: {
                     }
                     collabora: {
                         enabled: bool @timoni(runtime:bool:COLLABORA_ENABLED)
+                        tag: string @timoni(runtime:string:COLLABORA_TAG)
                         domain: string @timoni(runtime:string:COLLABORA_DOMAIN)
                     }
                     onlyoffice: {
