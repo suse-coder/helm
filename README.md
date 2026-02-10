@@ -89,18 +89,6 @@ This repository contains the following charts:
 - Helm and Timoni Chart for FluxCD
 - Document editing with Collabora and/or OnlyOffice
 
-### Production Chart (`charts/opencloud`)
-
-The complete OpenCloud deployment with all components for production use:
-
-- Full microservices architecture
-- Keycloak for authentication
-- MinIO for object storage
-- Document editing with Collabora and/or OnlyOffice
-- Full Gateway API integration
-
-[View Production Chart Documentation](./charts/opencloud/README.md)
-
 ### Development Chart (`charts/opencloud-dev`)
 
 A lightweight single-container deployment for development and testing:
