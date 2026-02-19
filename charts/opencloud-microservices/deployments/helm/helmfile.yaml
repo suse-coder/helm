@@ -47,7 +47,7 @@ releases:
 
       - collabora:
           enabled: true
-          tag: 25.04.8.3.1
+          tag: 25.04.9.1.1
           domain: collabora.opencloud.test # Domain for Collabora.
 
       # --- Networking Configuration ---
