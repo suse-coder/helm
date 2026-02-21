@@ -13,7 +13,6 @@ Welcome to the **OpenCloud Helm Charts** repository! This repository is intended
 - [Prerequisites](#prerequisites)
 - [Available Charts](#-available-charts)
   - [Production Chart](#production-chart-chartsopencloud)
-  - [Development Chart](#development-chart-chartsopencloud-dev)
 - [Installation](#-installation)
   - [Installing from Git Repository](#installing-from-git-repository)
   - [Installing from OCI Registry](#installing-from-oci-registry)

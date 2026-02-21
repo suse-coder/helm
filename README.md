@@ -19,9 +19,7 @@ Welcome to the **OpenCloud Helm Charts** repository! This repository is intended
 - [Prerequisites](#prerequisites)
 - [Version Stability Notice](#⚠️-version-stability-notice)
 - [Available Charts](#-available-charts)
-  - [Production Chart](#production-chart-chartsopencloud)
   - [Microservices Chart](#microservices-chart-chartsopencloud-microservices)
-  - [Development Chart](#development-chart-chartsopencloud-dev)
 - [License](#-license)
 - [Community Maintained](#community-maintained)
 
@@ -88,16 +86,6 @@ This repository contains the following charts:
 - Posix support
 - Helm and Timoni Chart for FluxCD
 - Document editing with Collabora and/or OnlyOffice
-
-### Development Chart (`charts/opencloud-dev`)
-
-A lightweight single-container deployment for development and testing:
-
-- Simplified deployment (single Docker container)
-- Minimal resource requirements
-- Quick setup for testing
-
-[View Development Chart Documentation](./charts/opencloud-dev/README.md)
 
 ## 📜 License
 
