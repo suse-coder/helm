@@ -133,13 +133,13 @@ spec:
           livenessProbe:
             exec:
               command:
-              - /bin/sh
-              - -c
-              - curl --silent --fail http://frontend:9140/app/list | grep '"name":"{{ $officeSuite.name }}"'
-            timeoutSeconds: 10
-            initialDelaySeconds: 60
-            periodSeconds: 20
-            failureThreshold: 3
+                - /bin/sh
+                - -c
+                - curl --silent --fail "http://collabora:9980/hosting/discovery" > /dev/null
+            initialDelaySeconds: 40  
+            periodSeconds: 5
+            failureThreshold: 2
+            timeoutSeconds: 3
 
           resources: {{ toYaml $.resources | nindent 12 }}
 
