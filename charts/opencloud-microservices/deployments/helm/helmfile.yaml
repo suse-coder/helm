@@ -254,7 +254,7 @@ releases:
                 maxSurge: 25%
                 maxUnavailable: 0%
             persistence:
-              enabled: false
+              enabled: true
               size: "10Gi"
               accessModes:
                 - ReadWriteOnce

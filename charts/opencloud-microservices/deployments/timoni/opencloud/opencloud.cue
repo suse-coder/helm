@@ -14,7 +14,7 @@ bundle: {
                 }
                 chart: {
                     name:    "opencloud-microservices"
-                    version: "0.3.22"
+                    version: "0.3.33"
                 }
                 sync: {
                     timeout: 10
@@ -214,7 +214,7 @@ bundle: {
 						}
 
 						policies: {
-                            enabled: true
+                            enabled: bool @timoni(runtime:bool:FEATURES_POLICIES_ENABLED)
                             policies: [{
                                 fileName: "proxy.rego"
                                 content: "\(_policiesProxyRego)"
