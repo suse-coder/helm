@@ -273,6 +273,19 @@ livenessProbe:
 {{- end -}}
 
 {{/*
+OC deployment container readinessProbe template
+*/}}
+{{- define "oc.readinessProbe" -}}
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: metrics-debug
+  timeoutSeconds: 5
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  failureThreshold: 3
+{{- end -}}
+{{/*
 OC deployment strategy
 */}}
 {{- define "oc.deploymentStrategy" -}}

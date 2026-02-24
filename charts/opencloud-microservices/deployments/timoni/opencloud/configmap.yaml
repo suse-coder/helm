@@ -20,7 +20,7 @@ data:
   ###############################################################################
   DEPLOY_TYPE: "RollingUpdate"
   MAX_SURGE: "25%"
-  MAX_UNAV: "25%"
+  MAX_UNAV: "0%"
 
   OPENCLOUD_WEB_URL: "https://www.opencloud.eu"
   OPENCLOUD_LOGGING_LEVEL: "debug"
@@ -49,7 +49,7 @@ data:
   # NATS Configuration
   NATS_DEPLOY_TYPE: "RollingUpdate"
   NATS_MAX_SURGE: "25%"
-  NATS_MAX_UNAV: "25%"
+  NATS_MAX_UNAV: "0%"
   NATS_PERSISTENCE_ENABLED: "false"
   NATS_PERSISTENCE_SIZE: "10Gi"
   

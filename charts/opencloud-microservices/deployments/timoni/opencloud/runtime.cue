@@ -140,7 +140,7 @@ runtime: {
 	defaults: {
 		DEPLOY_TYPE: "Recreate"
 		MAX_SURGE: "25%"
-		MAX_UNAV: "25%"
+		MAX_UNAV: "0%"
 		TAG: ""
 		KEYCLOAK_ADMIN_PASSWORD: "admin"
 		AMQP_URL: "amqp://guest:Dd0SXIe1k9osdfjkmA0TK1bb1B1d38OFSb@localhost"
@@ -203,7 +203,7 @@ runtime: {
 		WEB_OIDC_WEB_CLIENT_ID: "web"
 		NATS_DEPLOY_TYPE: "Recreate"
 		NATS_MAX_SURGE: "25%"
-		NATS_MAX_UNAV: "25%"
+		NATS_MAX_UNAV: "0%"
 		NATS_PERSISTENCE_ENABLED: true
 		NATS_PERSISTENCE_SIZE: "10Gi"
 		NATS_PERSISTENCE_CHOWN_INIT_CONTAINER: true

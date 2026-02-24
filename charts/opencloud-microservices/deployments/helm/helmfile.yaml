@@ -252,7 +252,7 @@ releases:
               type: RollingUpdate
               rollingUpdate:
                 maxSurge: 25%
-                maxUnavailable: 25%
+                maxUnavailable: 0%
             persistence:
               enabled: false
               size: "10Gi"

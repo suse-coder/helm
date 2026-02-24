@@ -92,7 +92,7 @@ spec:
             {{- include "oc.caEnv" $ | nindent 12}}
 
           {{- include "oc.livenessProbe" . | nindent 10 }}
-
+          {{- include "oc.readinessProbe" . | nindent 10 }}
           resources: {{ toYaml .resources | nindent 12 }}
 
           ports:

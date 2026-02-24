@@ -3233,7 +3233,7 @@ services:
         # @schema
         # -- The maximum number of pods that can be unavailable during the update.
         # Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).
-        maxUnavailable: 25%
+        maxUnavailable: 0%
     # -- Persistence settings.
     # @default -- see detailed persistence configuration options below
     persistence:
