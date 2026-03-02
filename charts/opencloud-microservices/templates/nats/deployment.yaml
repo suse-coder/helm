@@ -93,6 +93,7 @@ spec:
 
           {{- include "oc.livenessProbe" . | nindent 10 }}
           {{- include "oc.readinessProbe" . | nindent 10 }}
+          {{- include "oc.natsStartupProbe" . | nindent 10 }}
           resources: {{ toYaml .resources | nindent 12 }}
 
           ports:
@@ -108,6 +109,6 @@ spec:
 
       {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
-        {{- include "oc.caVolume" $ | nindent 8}}
+        {{- include "oc.caVolume" $ | nindent 8 }}
         {{- include "oc.persistence.dataVolume" . | nindent 8 }}
 {{- end }}

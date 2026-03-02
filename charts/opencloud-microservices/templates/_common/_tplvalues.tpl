@@ -285,6 +285,18 @@ readinessProbe:
   periodSeconds: 5
   failureThreshold: 3
 {{- end -}}
+
+# OC NATS startup probe - waits for JetStream to be ready
+{{- define "oc.natsStartupProbe" -}}
+startupProbe:
+  httpGet:
+    path: /healthz?js-enabled-only=true
+    port: metrics-debug
+  timeoutSeconds: 10
+  periodSeconds: 5
+  failureThreshold: 60  # 60 * 5s = 300s max wait for JetStream to be ready
+{{- end -}}
+
 {{/*
 OC deployment strategy
 */}}
