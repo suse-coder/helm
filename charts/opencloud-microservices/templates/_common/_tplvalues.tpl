@@ -297,6 +297,18 @@ startupProbe:
   failureThreshold: 60  # 60 * 5s = 300s max wait for JetStream to be ready
 {{- end -}}
 
+# OC NATS wait init container - for services that depend on NATS
+{{- define "oc.natsWaitForStartupProbe" -}}
+startupProbe:
+  httpGet:
+    path: /healthz?js-enabled=true
+    host: nats
+    port: 9234
+  timeoutSeconds: 10
+  periodSeconds: 5
+  failureThreshold: 60  # 60 * 5s = 300s max wait for JetStream to be ready
+{{- end -}}
+
 {{/*
 OC deployment strategy
 */}}
